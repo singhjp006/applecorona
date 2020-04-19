@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication
-@EntityScan(basePackages = {"com.apple.corona"})
+@EntityScan(basePackages = {"com.corona.apple"})
 @EnableJpaRepositories
 public class CoronaAppleApplication {
     public static void main(String[] args) {
