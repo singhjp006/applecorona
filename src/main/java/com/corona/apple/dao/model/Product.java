@@ -26,7 +26,9 @@ public class Product implements Serializable {
     @NotNull
     String name;
 
-    String description;
+    String shortDescription;
+
+    String longDescription;
 
     @NotNull @URL
     String url;
@@ -39,7 +41,11 @@ public class Product implements Serializable {
 
     String developedBy;
 
+    @NotNull
     Long clickCount;
+
+    @NotNull @Column(columnDefinition = "BOOLEAN")
+    Boolean isActive;
 
     @NotNull
     Date createdAt;

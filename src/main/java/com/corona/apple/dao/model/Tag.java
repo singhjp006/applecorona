@@ -3,6 +3,7 @@ package com.corona.apple.dao.model;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -18,10 +19,17 @@ public class Tag implements Serializable {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @NotNull @NaturalId
+    String referenceId;
+
     @NotNull
     String name;
 
+    @NotNull
     Long clickCount;
+
+    @NotNull @Column(columnDefinition = "BOOLEAN")
+    Boolean isActive;
 
     @NotNull
     Date createdAt;

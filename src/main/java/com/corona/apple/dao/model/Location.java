@@ -22,8 +22,11 @@ public class Location implements Serializable {
     String referenceId;
 
     @NotNull
-    String locationName;
+    String name;
 
-    @OneToMany(mappedBy = "location", targetEntity = Product.class)
+    @NotNull @Column(columnDefinition = "BOOLEAN")
+    Boolean isActive;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "location", targetEntity = Product.class)
     List<Product> products;
 }
