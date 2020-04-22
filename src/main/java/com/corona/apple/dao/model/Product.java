@@ -1,5 +1,6 @@
 package com.corona.apple.dao.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
@@ -36,7 +37,8 @@ public class Product implements Serializable {
     @URL
     String imageUrl;
 
-    @NotNull @ManyToOne
+    @NotNull @JsonIgnore
+    @ManyToOne
     Location location;
 
     String developedBy;
