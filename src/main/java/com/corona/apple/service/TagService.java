@@ -26,7 +26,7 @@ public class TagService {
         if (existingTagEntity != null) {
             return existingTagEntity;
         } else {
-            Tag tagEntity = MapperHelper.mapTagNameToTagEntity(name);
+            Tag tagEntity = MapperHelper.toTag(name);
             return tagRepository.save(tagEntity);
         }
     }

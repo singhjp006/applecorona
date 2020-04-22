@@ -17,7 +17,8 @@ public class HelperClass {
 
     public String uploadFileToS3(MultipartFile productImage) throws IOException {
 
-        return AmazonS3Helper.uploadFileToS3(convertMultipartToFile(productImage), convertMultipartToFile(productImage).getName(), "apple-corona-product-images");
+        return null;
+        //return AmazonS3Helper.uploadFileToS3(convertMultipartToFile(productImage), convertMultipartToFile(productImage).getName(), "apple-corona-product-images");
     }
 
     private byte[] convertFileToBytesArray(File file) throws IOException {
@@ -49,6 +50,7 @@ public class HelperClass {
 
         InputStream is = url.openStream();
 
-        return AmazonS3Helper.uploadFileToS3(is, fileName, "apple-corona-product-images");
+        return null;
+        //return AmazonS3Helper.uploadFileToS3(is, fileName, "apple-corona-product-images");
     }
 }

@@ -13,7 +13,7 @@ public class MapperHelper {
     private MapperHelper() {
     }
 
-    public static Product mapCreateProductRequestToEntity(CreateProductRequest createProductRequest, String imageS3Url, List<Tag> tags) {
+    public static Product toProduct(CreateProductRequest createProductRequest, String imageS3Url, List<Tag> tags,Location location) {
         Product productEntity = new Product();
 
         productEntity.setClickCount(0l);
@@ -27,12 +27,14 @@ public class MapperHelper {
         productEntity.setReferenceId(getReferenceIdForProduct(createProductRequest.getName().trim()));
         productEntity.setTags(tags);
         productEntity.setUrl(createProductRequest.getUrl());
+        productEntity.setLocation(location);
 
         return productEntity;
     }
 
 
     private static String getReferenceIdForProduct(String productName) {
+
         final String ALPHA_NUMERIC_STRING = "abcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder builder = new StringBuilder();
         int count = 12;
@@ -43,7 +45,7 @@ public class MapperHelper {
         return builder.toString();
     }
 
-    public static Tag mapTagNameToTagEntity(String name) {
+    public static Tag toTag(String name) {
         Tag tagEntity = new Tag();
         tagEntity.setClickCount(0l);
         tagEntity.setCreatedAt(new Date());
@@ -58,7 +60,7 @@ public class MapperHelper {
         return name.trim().replaceAll("\\s+", "-").toLowerCase();
     }
 
-    public static Location mapLocationNameToLocationEntity(String locationName) {
+    public static Location toLocation(String locationName) {
         Location location = new Location();
         location.setIsActive(true);
         location.setName(locationName.trim());

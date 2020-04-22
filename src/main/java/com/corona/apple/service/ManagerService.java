@@ -30,35 +30,31 @@ public class ManagerService {
     @Autowired
     HelperClass helperClass;
 
-    public Location createProduct(CreateProductRequest createProductRequest) throws IOException {
+    public Product createProduct(CreateProductRequest createProductRequest) throws IOException {
 
-        Location location = locationService.getLocation(createProductRequest.getLocationName());
-
-        if (location == null) {
-            location = locationService.setLocation(MapperHelper.mapLocationNameToLocationEntity(createProductRequest.getLocationName()));
-        }
-
-//        List<Tag> tags = tagService.getTags(createProductRequest.getTags());
+        Location location = locationService.getOrCreateLocation(createProductRequest.getLocationName());
 
         List<Tag> tags = new ArrayList<>();
-        createProductRequest.getTags().stream().forEach(tag -> {
-            tags.add(tagService.createTag(tag));
+        createProductRequest.getTags().stream().forEach(tagName -> {
+            tags.add(MapperHelper.toTag(tagName));
         });
 
 //        String imageS3Url = helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
         //hard coding for testing to avoid hitting aws again and again.
         String imageS3Url = "https://apple-corona-product-images.s3.ap-south-1.amazonaws.com/54b17e6c6aebb44f5fc3621af5a11033.png";
 
-        Product product = MapperHelper.mapCreateProductRequestToEntity(createProductRequest, imageS3Url, tags);
-        product.setLocation(location);
-        if (location.getProducts() == null) {
-            List<Product> products = new ArrayList<>();
-            products.add(product);
-            location.setProducts(products);
-        } else {
-            location.getProducts().add(product);
-        }
+        Product product = MapperHelper.toProduct(createProductRequest, imageS3Url, tags,location);
 
-        return locationService.setLocation(location);
+        return productService.createProduct(product);
+
+//        if (location.getProducts() == null) {
+//            List<Product> products = new ArrayList<>();
+//            products.add(product);
+//            location.setProducts(products);
+//        } else {
+//            location.getProducts().add(product);
+//        }
+
+//        return locationService.setLocation(location);
     }
 }
