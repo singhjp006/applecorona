@@ -15,6 +15,11 @@
     </properties>
 
     <dependencies>
+        <!-- <dependency> -->
+        <!-- <groupId>org.springframework.boot</groupId> -->
+        <!-- <artifactId>spring-boot-starter-web</artifactId> -->
+        <!-- </dependency> -->
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -32,7 +37,6 @@
             <artifactId>persistence-api</artifactId>
             <version>1.0.2</version>
         </dependency>
-
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
@@ -45,11 +49,16 @@
             <version>${spring-boot-ad-spring.version}</version>
         </dependency>
 
+
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.17</version>
         </dependency>
+
+
+
+
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -57,6 +66,7 @@
             <version>1.18.6</version>
             <optional>true</optional>
         </dependency>
+
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -71,28 +81,35 @@
             </exclusions>
         </dependency>
 
+
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger-ui</artifactId>
             <version>2.9.2</version>
         </dependency>
-
         <dependency>
             <groupId>io.springfox</groupId>
             <artifactId>springfox-swagger2</artifactId>
             <version>2.9.2</version>
         </dependency>
-
-<!--        <dependency>-->
-<!--            <groupId>com.amazonaws</groupId>-->
-<!--            <artifactId>aws-java-sdk-s3</artifactId>-->
-<!--            <version>1.11.764</version>-->
-<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>4.1.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>4.1.2</version>
+        </dependency>
 
     </dependencies>
 
     <build>
         <plugins>
+
             <plugin>
                 <executions>
                     <execution>
@@ -114,6 +131,7 @@
                     <target>8</target>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
@@ -139,7 +157,7 @@
                 <!-- <manifest> -->
                 <!-- <addClasspath>true</addClasspath> -->
                 <!-- <classpathPrefix>lib/</classpathPrefix> -->
-                <!-- <mainClass>com.apple.corona.AppleCoronaApplication</mainClass> -->
+                <!-- <mainClass>com.covid.status.CovidApplication</mainClass> -->
                 <!-- </manifest> -->
                 <!-- </archive> -->
                 <!-- </configuration> -->
@@ -147,5 +165,6 @@
 
         </plugins>
     </build>
+
 
 </project>

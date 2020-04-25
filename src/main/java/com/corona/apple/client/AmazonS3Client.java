@@ -1,6 +1,6 @@
-package com.corona.apple.service;
+package com.corona.apple.client;
 
-public class AmazonS3Helper {
+public class AmazonS3Client {
 
   //    private AmazonS3Helper(){
   //
