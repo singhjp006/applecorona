@@ -1,38 +1,42 @@
 package com.corona.apple.dao.model;
 
+import java.io.Serializable;
+import java.util.Date;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.validation.constraints.NotNull;
+
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.NaturalId;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Tag implements Serializable {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  Long id;
 
-    @NotNull @NaturalId
-    String referenceId;
+  @NotNull @NaturalId String referenceId;
 
-    @NotNull
-    String name;
+  @NotNull String name;
 
-    @NotNull @Column(columnDefinition = "BOOLEAN")
-    Boolean isActive;
+  @NotNull
+  @Column(columnDefinition = "BOOLEAN")
+  Boolean isActive;
 
-    @NotNull
-    Date createdAt;
+  @NotNull Date createdAt;
 
-    Date updatedAt;
+  Date updatedAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    TagClick tagClick;
+  @OneToOne(cascade = CascadeType.ALL)
+  TagClick tagClick;
 }

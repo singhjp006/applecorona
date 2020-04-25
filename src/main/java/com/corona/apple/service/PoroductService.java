@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
@@ -19,7 +18,6 @@ import com.corona.apple.service.mapper.MapperHelper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -33,20 +31,21 @@ public class PoroductService {
 
   TagClickRepository tagClickRepository;
 
-   ProductService productService;
+  ProductService productService;
 
-   LocationService locationService;
+  LocationService locationService;
 
-   TagService tagService;
+  TagService tagService;
 
-   HelperClass helperClass;
+  HelperClass helperClass;
 
   public Product createProduct(CreateProductRequest createProductRequest) throws IOException {
 
     Location location = locationService.getOrCreateLocation(createProductRequest.getLocationName());
 
     List<Tag> tags = new ArrayList<>();
-    createProductRequest.getTags()
+    createProductRequest
+        .getTags()
         .forEach(
             tagName -> {
               tags.add(tagService.createTag(tagName));
@@ -63,33 +62,28 @@ public class PoroductService {
     return productService.createProduct(product);
   }
 
+  public String recordImpression(Long productId) {
 
-  public String recordImpression(Long productId){
-
-      Optional<Product> product=productRepository.getById(productId);
-      if(!product.isPresent()){
-          // TODO: 25/04/20 change it to Custom exception
-          throw new RuntimeException();
-      }
+    Optional<Product> product = productRepository.getById(productId);
+    if (!product.isPresent()) {
+      // TODO: 25/04/20 change it to Custom exception
+      throw new RuntimeException();
+    }
 
     // TODO: 25/04/20 implement in corresponding services
 
-      List<TagClick> tagClicks = tagClickRepository.findByTagIn(product.get().getTags());
+    List<TagClick> tagClicks = tagClickRepository.findByTagIn(product.get().getTags());
 
-      tagClicks.forEach(TagClick::increment);
+    tagClicks.forEach(TagClick::increment);
 
-      Optional<ProductClick> productClick=productClickRepository.getByProductId(productId);
-      productClick.get().increment();
+    Optional<ProductClick> productClick = productClickRepository.getByProductId(productId);
+    productClick.get().increment();
 
     // TODO: 25/04/20 Verify bulk update
     tagClickRepository.saveAll(tagClicks);
 
-      productClickRepository.save(productClick.get());
+    productClickRepository.save(productClick.get());
 
-      return product.get().getUrl();
-
+    return product.get().getUrl();
   }
-
-
-
 }

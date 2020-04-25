@@ -11,10 +11,9 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductService {
 
-    @Autowired
-    ProductRepository productRepository;
+  @Autowired ProductRepository productRepository;
 
-    public Product createProduct(Product product){
-        return productRepository.save(product);
-    }
+  public Product createProduct(Product product) {
+    return productRepository.save(product);
+  }
 }
