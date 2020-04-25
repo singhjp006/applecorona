@@ -30,8 +30,7 @@ public class ProductController {
 
   @Autowired HelperClass helperClass;
 
-  @Autowired
-  PoroductService poroductService;
+  @Autowired PoroductService poroductService;
 
   @ApiOperation(response = String.class, value = "uploadFileToS3")
   @PostMapping(path = "uploadFile")
@@ -58,26 +57,24 @@ public class ProductController {
   }
 
   @ApiOperation(
-          response = Location.class,
-          value = "getProduct",
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      response = Location.class,
+      value = "getProduct",
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @PostMapping(path = "/products/{productId}")
   public @ResponseBody Product getProduct(@RequestBody CreateProductRequest createProductRequest)
-          throws IOException {
+      throws IOException {
     return poroductService.createProduct(createProductRequest);
   }
 
   @ApiOperation(
-          response = Location.class,
-          value = "Open Product",
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      response = Location.class,
+      value = "Open Product",
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @GetMapping(path = "/products/{productId}/open")
-  public @ResponseBody
-  RedirectView openProduct(@PathVariable("productId") Long productId) {
+  public @ResponseBody RedirectView openProduct(@PathVariable("productId") Long productId) {
     RedirectView redirectView = new RedirectView();
-    poroductService.recordImpression(productId);
-    redirectView.setUrl("http://www.yahoo.com");
+    String url = poroductService.recordImpression(productId);
+    redirectView.setUrl(url);
     return redirectView;
   }
-
 }

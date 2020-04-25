@@ -64,7 +64,7 @@ public class PoroductService {
   }
 
 
-  public void recordImpression(Long productId){
+  public String recordImpression(Long productId){
 
       Optional<Product> product=productRepository.getById(productId);
       if(!product.isPresent()){
@@ -82,9 +82,11 @@ public class PoroductService {
       productClick.get().increment();
 
     // TODO: 25/04/20 Verify bulk update
-   tagClickRepository.saveAll(tagClicks);
+    tagClickRepository.saveAll(tagClicks);
 
       productClickRepository.save(productClick.get());
+
+      return product.get().getUrl();
 
   }
 

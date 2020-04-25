@@ -1,6 +1,7 @@
 package com.corona.apple.service;
 
 import com.corona.apple.dao.model.Tag;
+import com.corona.apple.dao.model.TagClick;
 import com.corona.apple.dao.repository.TagRepository;
 import com.corona.apple.service.mapper.MapperHelper;
 import lombok.AccessLevel;

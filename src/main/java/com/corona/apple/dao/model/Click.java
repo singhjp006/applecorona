@@ -14,9 +14,9 @@ public abstract class Click {
   @GeneratedValue(strategy = GenerationType.AUTO)
   Long id;
 
-  Long count;
+  Long count=0l;
 
-  public void increment(){
+  public void increment() {
     this.count++;
   }
 }

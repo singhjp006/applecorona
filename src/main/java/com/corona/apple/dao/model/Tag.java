@@ -25,9 +25,6 @@ public class Tag implements Serializable {
     @NotNull
     String name;
 
-    @NotNull
-    Long clickCount;
-
     @NotNull @Column(columnDefinition = "BOOLEAN")
     Boolean isActive;
 
@@ -35,4 +32,7 @@ public class Tag implements Serializable {
     Date createdAt;
 
     Date updatedAt;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    TagClick tagClick;
 }
