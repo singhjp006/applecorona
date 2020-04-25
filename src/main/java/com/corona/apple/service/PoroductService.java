@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.corona.apple.CommonUtils;
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
 import com.corona.apple.dao.model.ProductClick;
@@ -17,10 +18,12 @@ import com.corona.apple.dao.repository.TagClickRepository;
 import com.corona.apple.dto.ProductsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.service.mapper.MapperHelper;
+import io.swagger.models.auth.In;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -92,12 +95,80 @@ public class PoroductService {
 
     }
 
+//    public static <T extends AssetResponse> PaginatedResponse<T> getPaginatedResponse(
+//            Page<Product> assets) {
+//        List<AssetResponse> assetResponses =
+//                assets.getContent().stream()
+//                        .map(
+//                                asset -> {
+//                                    AssetResponse assetResponse = getAssetResponse(asset);
+//                                    return assetResponse;
+//                                })
+//                        .collect(Collectors.toList());
+//        PaginatedResponse<AssetResponse> paginatedResponse = new PaginatedResponse<>();
+//        paginatedResponse.setResponses(assetResponses);
+//        paginatedResponse.setTotalElements(assets.getTotalElements());
+//        return (PaginatedResponse<T>) paginatedResponse;
+//    }
+
     public ProductsResponse getProducts(Optional<List<String>> tagReferences, Optional<String> locationReference, Long offset, Long limit) {
 
+
+        Integer start=10;
+        Integer limit2=50;
+        Pageable paginationConfig =
+                CommonUtils.getDefaultPaginationObject(start,limit2);
+
+        List<Tag> tags=new ArrayList<>();
+        Page<Product> pages=productRepository.getAllByTags(tags,paginationConfig);
+
+
+        if(tag && location){
+            getAll
+        }
+        else if(tag){
+            getByLocation()
+
+        }
+        else if (location){
+            getAllByTAgs
+        }
+        else{
+            getAllByTAgsAndLocation
+        }
+
+
+
+
+        List<Product> productRegetAllByTagsAndLocation()
         if (tagReferences.isPresent()) {
             List<Tag> tags = tagService.getTags(tagReferences.get());
         }
 
+
+
+        /*
+
+         product                    |                  tag                              |                       product_tag    |        location
+
+         id, name ,...               |      id, name                                    |          pid ,tid                     |
+
+         product p join tag t, join product_tag pt join location l  where p.id=pt.pid and t.id=pt.tid and location.id=p.location_id
+
+
+
+
+
+
+
+
+
+        product * tag * product_tags
+
+
+
+
+         */
 
 
         return null;
