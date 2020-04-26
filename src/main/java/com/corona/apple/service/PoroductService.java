@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import com.corona.apple.CommonUtils;
 import com.corona.apple.dao.model.Location;
@@ -12,29 +11,29 @@ import com.corona.apple.dao.model.Product;
 import com.corona.apple.dao.model.ProductClick;
 import com.corona.apple.dao.model.Tag;
 import com.corona.apple.dao.model.TagClick;
-import com.corona.apple.dao.repository.ProductClickRepository;
-import com.corona.apple.dao.repository.ProductRepository;
-import com.corona.apple.dao.repository.TagClickRepository;
+import com.corona.apple.dao.repository.*;
 import com.corona.apple.dto.ProductsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.service.mapper.MapperHelper;
-import io.swagger.models.auth.In;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@AllArgsConstructor
+@AllArgsConstructor(onConstructor = @__(@Autowired))
 public class PoroductService {
 
     ProductClickRepository productClickRepository;
 
     ProductRepository productRepository;
+
+    TagRepository tagRepository;
+
+    LocationRepository locationRepository;
 
     TagClickRepository tagClickRepository;
 
@@ -114,36 +113,58 @@ public class PoroductService {
     public ProductsResponse getProducts(Optional<List<String>> tagReferences, Optional<String> locationReference, Long offset, Long limit) {
 
 
-        Integer start=10;
-        Integer limit2=50;
-        Pageable paginationConfig =
-                CommonUtils.getDefaultPaginationObject(start,limit2);
+//        Integer start=10;
+//        Integer limit2=50;
+//        Pageable paginationConfig =
+//                CommonUtils.getDefaultPaginationObject(offset.intValue(), limit.intValue());
 
-        List<Tag> tags=new ArrayList<>();
-        Page<Product> pages=productRepository.getAllByTags(tags,paginationConfig);
-
-
-        if(tag && location){
-            getAll
-        }
-        else if(tag){
-            getByLocation()
-
-        }
-        else if (location){
-            getAllByTAgs
-        }
-        else{
-            getAllByTAgsAndLocation
-        }
-
-
-
-
-        List<Product> productRegetAllByTagsAndLocation()
+//        Page<Product> pages = productRepository.getAllByTags(tags);
+        List<Tag> tags = null;
         if (tagReferences.isPresent()) {
-            List<Tag> tags = tagService.getTags(tagReferences.get());
+            tags = tagRepository.getAllByReferenceIdIn(tagReferences.get());
         }
+
+        List<Location> locations = null;
+        if (locationReference.isPresent()) {
+            List<String> locationReferenceIds = new ArrayList<>();
+            locationReferenceIds.add("global");
+            locationReferenceIds.add(locationReference.get());
+            locations = locationRepository.getAllByReferenceIdIn(locationReferenceIds);
+        }
+
+        List<Product> products;
+        if (!(tagReferences.isPresent() && locationReference.isPresent())) {
+            products = productRepository.getAllByIsActive(true);
+        } else if (!tagReferences.isPresent()) {
+            products = productRepository.getAllByLocationIn(locations);
+        } else if (!locationReference.isPresent()) {
+            products = productRepository.getAllByTagsIn(tags);
+        } else { // both present
+            products = productRepository.getAllByTagsAndLocations(tags, locations);
+        }
+
+        return MapperHelper.toProductsResponse(products);
+//        if(tag && location){
+//            getAll
+//        }
+//        else if(tag){
+//            getByLocation()
+//
+//        }
+//        else if (location){
+//            getAllByTAgs
+//        }
+//        else{
+//            getAllByTAgsAndLocation
+//        }
+
+
+
+
+//        List<Product> productRegetAllByTagsAndLocation()
+//        if (tagReferences.isPresent()) {
+//            List<Tag> tags = tagService.getTags(tagReferences.get());
+//        }
 
 
 
@@ -171,6 +192,6 @@ public class PoroductService {
          */
 
 
-        return null;
+//        return null;
     }
 }

@@ -1,5 +1,6 @@
 package com.corona.apple.service.mapper;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +9,11 @@ import com.corona.apple.dao.model.Product;
 import com.corona.apple.dao.model.ProductClick;
 import com.corona.apple.dao.model.Tag;
 import com.corona.apple.dao.model.TagClick;
+import com.corona.apple.dto.LocationResponse;
+import com.corona.apple.dto.ProductResponse;
+import com.corona.apple.dto.ProductsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
+import sun.awt.X11.XPropertyEvent;
 
 public class MapperHelper {
 
@@ -81,5 +86,44 @@ public class MapperHelper {
     ProductClick productClick = new ProductClick();
     productClick.setProduct(product);
     return productClick;
+  }
+
+  public static ProductsResponse toProductsResponse(List<Product> products) {
+    ProductsResponse response = new ProductsResponse();
+//    response.setPagination(pagination);
+
+    List<ProductResponse> productsResponse = new ArrayList<>();
+
+    products.stream().forEach(product -> {
+      ProductResponse productResponse = new ProductResponse();
+
+      productResponse.setTags(tagsToString(product.getTags()));
+      productResponse.setImageUrl(product.getImageUrl());
+      productResponse.setLocation(toLocationResponse(product.getLocation()));
+      productResponse.setName(product.getName());
+      productResponse.setReferenceId(product.getReferenceId());
+      productResponse.setShortDescription(product.getShortDescription());
+
+      productsResponse.add(productResponse);
+    });
+
+    response.setProducts(productsResponse);
+
+    return response;
+  }
+
+  private static LocationResponse toLocationResponse(Location location) {
+    LocationResponse response = new LocationResponse();
+    response.setName(location.getName());
+    response.setReferenceId(location.getReferenceId());
+    return response;
+  }
+
+  private static List<String> tagsToString(List<Tag> tags) {
+    List<String> response = new ArrayList<>();
+    tags.stream().forEach(tag -> {
+      response.add(tag.getName());
+    });
+    return response;
   }
 }

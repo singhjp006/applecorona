@@ -16,4 +16,7 @@ public interface TagRepository extends CrudRepository<Tag, Long> {
 
     @Query("SELECT t FROM Tag t WHERE name=:name AND isActive=1")
     Tag getTag(@Param("name") String name);
+
+//    @Query("SELECT t FROM Tag t WHERE referenceId IN (:referenceIds) AND isActive=1")
+    List<Tag> getAllByReferenceIdIn(@Param("referenceIds") List<String> referenceIds);
 }
