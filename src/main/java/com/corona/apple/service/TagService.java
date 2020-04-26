@@ -3,6 +3,7 @@ package com.corona.apple.service;
 import com.corona.apple.dao.model.Tag;
 import com.corona.apple.dao.model.TagClick;
 import com.corona.apple.dao.repository.TagRepository;
+import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.service.mapper.MapperHelper;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -30,5 +31,11 @@ public class TagService {
             Tag tagEntity = MapperHelper.toTag(name);
             return tagRepository.save(tagEntity);
         }
+    }
+
+    public TagsResponse getTags() {
+        List<Tag> tagEntities = tagRepository.getAllByIsActive(true);
+
+        return MapperHelper.toTagsResponse(tagEntities);
     }
 }

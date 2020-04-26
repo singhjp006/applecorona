@@ -113,9 +113,6 @@ public class PoroductService {
 
     public ProductsResponse getProducts(Optional<List<String>> tagReferences, Optional<String> locationReference, Long offset, Long limit) {
 
-
-//        Integer start=10;
-//        Integer limit2=50;
         Pageable paginationConfig =
                 CommonUtils.getDefaultPaginationObject(offset.intValue(), limit.intValue());
 
@@ -145,22 +142,6 @@ public class PoroductService {
         }
 
         return MapperHelper.toProductsResponse(products, limit, offset);
-//        if(tag && location){
-//            getAll
-//        }
-//        else if(tag){
-//            getByLocation()
-//
-//        }
-//        else if (location){
-//            getAllByTAgs
-//        }
-//        else{
-//            getAllByTAgsAndLocation
-//        }
-
-
-
 
 //        List<Product> productRegetAllByTagsAndLocation()
 //        if (tagReferences.isPresent()) {

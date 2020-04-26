@@ -9,10 +9,7 @@ import com.corona.apple.dao.model.Product;
 import com.corona.apple.dao.model.ProductClick;
 import com.corona.apple.dao.model.Tag;
 import com.corona.apple.dao.model.TagClick;
-import com.corona.apple.dto.LocationResponse;
-import com.corona.apple.dto.PaginationResponse;
-import com.corona.apple.dto.ProductResponse;
-import com.corona.apple.dto.ProductsResponse;
+import com.corona.apple.dto.*;
 import com.corona.apple.dto.request.CreateProductRequest;
 import org.springframework.data.domain.Page;
 import sun.awt.X11.XPropertyEvent;
@@ -132,5 +129,22 @@ public class MapperHelper {
       response.add(tag.getName());
     });
     return response;
+  }
+
+  public static TagsResponse toTagsResponse(List<Tag> tagEntities) {
+    TagsResponse tagsResponse = new TagsResponse();
+
+    List<TagResponse> tags = new ArrayList<>();
+
+    tagEntities.stream().forEach(tagEntity -> {
+      TagResponse tagResponse = new TagResponse();
+      tagResponse.setName(tagEntity.getName());
+      tagResponse.setReferenceId(tagEntity.getReferenceId());
+
+      tags.add(tagResponse);
+    });
+
+    tagsResponse.setTags(tags);
+    return tagsResponse;
   }
 }

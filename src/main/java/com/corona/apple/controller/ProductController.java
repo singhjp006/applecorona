@@ -7,9 +7,11 @@ import java.util.Optional;
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
 import com.corona.apple.dto.ProductsResponse;
+import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.service.HelperClass;
 import com.corona.apple.service.PoroductService;
+import com.corona.apple.service.TagService;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -35,6 +37,9 @@ public class ProductController {
 
   @Autowired PoroductService poroductService;
 
+  @Autowired
+  TagService tagService;
+
   @ApiOperation(response = String.class, value = "uploadFileToS3")
   @PostMapping(path = "uploadFile")
   public @ResponseBody String uploadFileToS3(@RequestParam MultipartFile productImage)
@@ -57,6 +62,12 @@ public class ProductController {
   public @ResponseBody Product createProduct(@RequestBody CreateProductRequest createProductRequest)
       throws IOException {
     return poroductService.createProduct(createProductRequest);
+  }
+
+  @ApiOperation(response = TagsResponse.class, value = "getTags")
+  @GetMapping(path = "/tags")
+  public @ResponseBody TagsResponse getTags() {
+    return tagService.getTags();
   }
 
   @ApiOperation(response = ProductsResponse.class, value = "getProducts")
