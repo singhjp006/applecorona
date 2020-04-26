@@ -22,16 +22,16 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
   List<Product> getAllByLocation(Location location);
 
-  List<Product> getAllByIsActive(Boolean isActive);
+  Page<Product> getAllByIsActive(Boolean isActive, Pageable paginationConfig);
 
-  List<Product> getAllByLocationIn(List<Location> locations);
+  Page<Product> getAllByLocationIn(List<Location> locations, Pageable paginationConfig);
 
-  List<Product> getAllByTagsIn(List<Tag> tags);
+  Page<Product> getAllByTagsIn(List<Tag> tags, Pageable paginationConfig);
 
 //  List<Product> getAllByTagInAndLocationIn(List<Tag> tags, List<Location> locations);
 
   @Query("SELECT p FROM Product p WHERE tags IN (:tags) AND location IN (:locations)")
-  List<Product> getAllByTagsAndLocations(@Param("tags") List<Tag> tags, @Param("locations") List<Location> locations);
+  Page<Product> getAllByTagsAndLocations(@Param("tags") List<Tag> tags, @Param("locations") List<Location> locations, Pageable paginationConfig);
 
 
 //  Page<Product> getAllByTags(List<Tag> tags/*, Pageable pageable*/);

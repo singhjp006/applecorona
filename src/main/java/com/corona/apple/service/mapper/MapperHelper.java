@@ -10,9 +10,11 @@ import com.corona.apple.dao.model.ProductClick;
 import com.corona.apple.dao.model.Tag;
 import com.corona.apple.dao.model.TagClick;
 import com.corona.apple.dto.LocationResponse;
+import com.corona.apple.dto.PaginationResponse;
 import com.corona.apple.dto.ProductResponse;
 import com.corona.apple.dto.ProductsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
+import org.springframework.data.domain.Page;
 import sun.awt.X11.XPropertyEvent;
 
 public class MapperHelper {
@@ -88,23 +90,28 @@ public class MapperHelper {
     return productClick;
   }
 
-  public static ProductsResponse toProductsResponse(List<Product> products) {
+  public static ProductsResponse toProductsResponse(Page<Product> products, Long limit, Long offset) {
     ProductsResponse response = new ProductsResponse();
-//    response.setPagination(pagination);
+
+    PaginationResponse pagination = new PaginationResponse();
+    pagination.setLimit(limit);
+    pagination.setOffset(offset);
+    pagination.setTotal(products.getTotalElements());
+    response.setPagination(pagination);
 
     List<ProductResponse> productsResponse = new ArrayList<>();
 
-    products.stream().forEach(product -> {
-      ProductResponse productResponse = new ProductResponse();
+    products.get().forEach(product -> {
+        ProductResponse productResponse = new ProductResponse();
 
-      productResponse.setTags(tagsToString(product.getTags()));
-      productResponse.setImageUrl(product.getImageUrl());
-      productResponse.setLocation(toLocationResponse(product.getLocation()));
-      productResponse.setName(product.getName());
-      productResponse.setReferenceId(product.getReferenceId());
-      productResponse.setShortDescription(product.getShortDescription());
+        productResponse.setTags(tagsToString(product.getTags()));
+        productResponse.setImageUrl(product.getImageUrl());
+        productResponse.setLocation(toLocationResponse(product.getLocation()));
+        productResponse.setName(product.getName());
+        productResponse.setReferenceId(product.getReferenceId());
+        productResponse.setShortDescription(product.getShortDescription());
 
-      productsResponse.add(productResponse);
+        productsResponse.add(productResponse);
     });
 
     response.setProducts(productsResponse);

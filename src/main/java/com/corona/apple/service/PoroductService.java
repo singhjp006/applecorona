@@ -19,6 +19,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -115,8 +116,8 @@ public class PoroductService {
 
 //        Integer start=10;
 //        Integer limit2=50;
-//        Pageable paginationConfig =
-//                CommonUtils.getDefaultPaginationObject(offset.intValue(), limit.intValue());
+        Pageable paginationConfig =
+                CommonUtils.getDefaultPaginationObject(offset.intValue(), limit.intValue());
 
 //        Page<Product> pages = productRepository.getAllByTags(tags);
         List<Tag> tags = null;
@@ -132,18 +133,18 @@ public class PoroductService {
             locations = locationRepository.getAllByReferenceIdIn(locationReferenceIds);
         }
 
-        List<Product> products;
+        Page<Product> products;
         if (!(tagReferences.isPresent() && locationReference.isPresent())) {
-            products = productRepository.getAllByIsActive(true);
+            products = productRepository.getAllByIsActive(true, paginationConfig);
         } else if (!tagReferences.isPresent()) {
-            products = productRepository.getAllByLocationIn(locations);
+            products = productRepository.getAllByLocationIn(locations, paginationConfig);
         } else if (!locationReference.isPresent()) {
-            products = productRepository.getAllByTagsIn(tags);
+            products = productRepository.getAllByTagsIn(tags, paginationConfig);
         } else { // both present
-            products = productRepository.getAllByTagsAndLocations(tags, locations);
+            products = productRepository.getAllByTagsAndLocations(tags, locations, paginationConfig);
         }
 
-        return MapperHelper.toProductsResponse(products);
+        return MapperHelper.toProductsResponse(products, limit, offset);
 //        if(tag && location){
 //            getAll
 //        }
