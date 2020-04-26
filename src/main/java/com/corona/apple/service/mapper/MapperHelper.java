@@ -105,6 +105,7 @@ public class MapperHelper {
         productResponse.setImageUrl(product.getImageUrl());
         productResponse.setLocation(toLocationResponse(product.getLocation()));
         productResponse.setName(product.getName());
+        productResponse.setUrlSlug(getUrlSlug(product.getName(), product.getReferenceId()));
         productResponse.setReferenceId(product.getReferenceId());
         productResponse.setShortDescription(product.getShortDescription());
 
@@ -123,7 +124,7 @@ public class MapperHelper {
     return response;
   }
 
-  private static List<String> tagsToString(List<Tag> tags) {
+  public static List<String> tagsToString(List<Tag> tags) {
     List<String> response = new ArrayList<>();
     tags.stream().forEach(tag -> {
       response.add(tag.getName());
@@ -146,5 +147,24 @@ public class MapperHelper {
 
     tagsResponse.setTags(tags);
     return tagsResponse;
+  }
+
+  public static SingleProductResponse toSingleProductResponse(Product product, List<ProductResponse> similarProducts) {
+    SingleProductResponse response = new SingleProductResponse();
+    response.setImageUrl(product.getImageUrl());
+    response.setLocation(toLocationResponse(product.getLocation()));
+    response.setLongDescription(product.getLongDescription());
+    response.setName(product.getName());
+    response.setReferenceId(product.getReferenceId());
+    response.setUrlSlug(getUrlSlug(product.getName(), product.getReferenceId()));
+    response.setShortDescription(product.getShortDescription());
+    response.setTags(toTagsResponse(product.getTags()).getTags());
+    response.setSimilarProducts(similarProducts);
+    return response;
+  }
+
+  private static String getUrlSlug(String productName, String referenceId) {
+    //TODO: change the name of the method used below. because we are using it here as well with some other purpose
+    return getReferenceIdForTagOrLocation(productName) + "/" + referenceId;
   }
 }

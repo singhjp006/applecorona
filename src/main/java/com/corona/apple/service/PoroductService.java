@@ -12,7 +12,9 @@ import com.corona.apple.dao.model.ProductClick;
 import com.corona.apple.dao.model.Tag;
 import com.corona.apple.dao.model.TagClick;
 import com.corona.apple.dao.repository.*;
+import com.corona.apple.dto.ProductResponse;
 import com.corona.apple.dto.ProductsResponse;
+import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.service.mapper.MapperHelper;
 import lombok.AccessLevel;
@@ -22,6 +24,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
+import javax.swing.text.html.Option;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -175,5 +179,23 @@ public class PoroductService {
 
 
 //        return null;
+    }
+
+    public SingleProductResponse getProduct(String referenceId, Boolean getSimilar) {
+        Product product = productRepository.getByReferenceId(referenceId);
+
+        List<ProductResponse> similarProducts = new ArrayList<>();
+        if (getSimilar) {
+            similarProducts = getSimilarProducts(product, 3l);
+        }
+
+        return MapperHelper.toSingleProductResponse(product, similarProducts);
+
+    }
+
+    private List<ProductResponse> getSimilarProducts(Product product, Long count) {
+        List<String> tagReferences = MapperHelper.tagsToString(product.getTags());
+
+        return getProducts(Optional.of(tagReferences), Optional.of(product.getLocation().getReferenceId()), 0l, count).getProducts();
     }
 }

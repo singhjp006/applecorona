@@ -6,7 +6,9 @@ import java.util.Optional;
 
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
+import com.corona.apple.dto.ProductResponse;
 import com.corona.apple.dto.ProductsResponse;
+import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.service.HelperClass;
@@ -74,6 +76,12 @@ public class ProductController {
   @GetMapping(path = "/products")
   public @ResponseBody ProductsResponse getProducts(@RequestParam(required = false) Optional<List<String>> tagReferences, @RequestParam(required = false) Optional<String> locationReference, @RequestParam(defaultValue = "0") Long offset, @RequestParam(defaultValue = "30") Long limit) {
     return poroductService.getProducts(tagReferences, locationReference, offset, limit);
+  }
+
+  @ApiOperation(response = SingleProductResponse.class, value = "getProduct")
+  @GetMapping(path = "/products/{referenceId}")
+  public @ResponseBody SingleProductResponse getProduct(@PathVariable("referenceId") String referenceId, @RequestParam(defaultValue = "true") Boolean getSimilar) {
+    return poroductService.getProduct(referenceId, getSimilar);
   }
 
 //  @ApiOperation(
