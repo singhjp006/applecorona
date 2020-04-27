@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
+import springfox.documentation.annotations.ApiIgnore;
 
 @RestController
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -42,6 +43,7 @@ public class ProductController {
   @Autowired
   TagService tagService;
 
+  @ApiIgnore
   @ApiOperation(response = String.class, value = "uploadFileToS3")
   @PostMapping(path = "uploadFile")
   public @ResponseBody String uploadFileToS3(@RequestParam MultipartFile productImage)
@@ -49,6 +51,7 @@ public class ProductController {
     return helperClass.uploadFileToS3(productImage);
   }
 
+  @ApiIgnore
   @ApiOperation(response = String.class, value = "uploadFileToS3FromUrl")
   @PostMapping(path = "/uploadFileToS3FromUrl")
   public @ResponseBody String uploadFileToS3FromUrl(@RequestParam String imageUrl)

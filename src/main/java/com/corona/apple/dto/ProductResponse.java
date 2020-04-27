@@ -14,6 +14,7 @@ public class ProductResponse implements Serializable {
     String referenceId;
     String name;
     String shortDescription;
+    String url;
     String imageUrl;
     String urlSlug;
     LocationResponse location;

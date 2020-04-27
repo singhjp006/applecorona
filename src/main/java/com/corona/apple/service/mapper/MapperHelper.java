@@ -103,6 +103,7 @@ public class MapperHelper {
 
         productResponse.setTags(tagsToString(product.getTags()));
         productResponse.setImageUrl(product.getImageUrl());
+        productResponse.setUrl(product.getUrl());
         productResponse.setLocation(toLocationResponse(product.getLocation()));
         productResponse.setName(product.getName());
         productResponse.setUrlSlug(getUrlSlug(product.getName(), product.getReferenceId()));
@@ -156,6 +157,7 @@ public class MapperHelper {
     response.setLongDescription(product.getLongDescription());
     response.setName(product.getName());
     response.setReferenceId(product.getReferenceId());
+    response.setUrl(product.getUrl());
     response.setUrlSlug(getUrlSlug(product.getName(), product.getReferenceId()));
     response.setShortDescription(product.getShortDescription());
     response.setTags(toTagsResponse(product.getTags()).getTags());
