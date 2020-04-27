@@ -33,7 +33,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
   @Query("SELECT p FROM Product p WHERE tags IN (:tags) AND location IN (:locations)")
   Page<Product> getAllByTagsAndLocations(@Param("tags") List<Tag> tags, @Param("locations") List<Location> locations, Pageable paginationConfig);
 
-  Product getByReferenceId(String referenceId);
+  Optional<Product> getByReferenceId(String referenceId);
 
 
 //  Page<Product> getAllByTags(List<Tag> tags/*, Pageable pageable*/);

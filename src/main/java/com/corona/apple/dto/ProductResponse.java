@@ -18,6 +18,6 @@ public class ProductResponse implements Serializable {
     String imageUrl;
     String urlSlug;
     LocationResponse location;
-    List<String> tags;
+    List<TagResponse> tags;
     List<String> badges;
 }

@@ -73,9 +73,9 @@ public class PoroductService {
     }
 
 
-    public String recordImpression(Long productId) {
+    public String recordImpression(String referenceId) {
 
-        Optional<Product> product = productRepository.getById(productId);
+        Optional<Product> product = productRepository.getByReferenceId(referenceId);
         if (!product.isPresent()) {
             // TODO: 25/04/20 change it to Custom exception
             throw new RuntimeException();
@@ -87,7 +87,7 @@ public class PoroductService {
 
         tagClicks.forEach(TagClick::increment);
 
-        Optional<ProductClick> productClick = productClickRepository.getByProductId(productId);
+        Optional<ProductClick> productClick = productClickRepository.getByProductId(product.get().getId());
         productClick.get().increment();
 
         // TODO: 25/04/20 Verify bulk update
@@ -96,7 +96,6 @@ public class PoroductService {
         productClickRepository.save(productClick.get());
 
         return product.get().getUrl();
-
     }
 
 //    public static <T extends AssetResponse> PaginatedResponse<T> getPaginatedResponse(
@@ -182,14 +181,19 @@ public class PoroductService {
     }
 
     public SingleProductResponse getProduct(String referenceId, Boolean getSimilar) {
-        Product product = productRepository.getByReferenceId(referenceId);
+        Optional<Product> product = productRepository.getByReferenceId(referenceId);
+
+        if (!product.isPresent()) {
+            // TODO: change it to Custom exception
+            throw new RuntimeException();
+        }
 
         List<ProductResponse> similarProducts = new ArrayList<>();
         if (getSimilar) {
-            similarProducts = getSimilarProducts(product, 3l);
+            similarProducts = getSimilarProducts(product.get(), 3l);
         }
 
-        return MapperHelper.toSingleProductResponse(product, similarProducts);
+        return MapperHelper.toSingleProductResponse(product.get(), similarProducts);
 
     }
 

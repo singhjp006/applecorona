@@ -74,6 +74,10 @@ public class ProductController {
   public @ResponseBody TagsResponse getTags() {
     return tagService.getTags();
   }
+//
+//  public @ResponseBody LocationsResponse getLocations() {
+//    return locationService.
+//  }
 
   @ApiOperation(response = ProductsResponse.class, value = "getProducts")
   @GetMapping(path = "/products")
@@ -101,10 +105,10 @@ public class ProductController {
       response = Location.class,
       value = "Open Product",
       produces = MediaType.APPLICATION_JSON_VALUE)
-  @GetMapping(path = "/products/{productId}/open")
-  public @ResponseBody RedirectView openProduct(@PathVariable("productId") Long productId) {
+  @GetMapping(path = "/products/{referenceId}/open")
+  public @ResponseBody RedirectView openProduct(@PathVariable("referenceId") String referenceId) {
     RedirectView redirectView = new RedirectView();
-    String url = poroductService.recordImpression(productId);
+    String url = poroductService.recordImpression(referenceId);
     redirectView.setUrl(url);
     return redirectView;
   }

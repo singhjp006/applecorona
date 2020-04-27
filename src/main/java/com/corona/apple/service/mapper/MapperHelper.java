@@ -101,7 +101,7 @@ public class MapperHelper {
     products.get().forEach(product -> {
         ProductResponse productResponse = new ProductResponse();
 
-        productResponse.setTags(tagsToString(product.getTags()));
+        productResponse.setTags(toTagsResponse(product.getTags()).getTags());
         productResponse.setImageUrl(product.getImageUrl());
         productResponse.setUrl(product.getUrl());
         productResponse.setLocation(toLocationResponse(product.getLocation()));
@@ -167,6 +167,6 @@ public class MapperHelper {
 
   private static String getUrlSlug(String productName, String referenceId) {
     //TODO: change the name of the method used below. because we are using it here as well with some other purpose
-    return getReferenceIdForTagOrLocation(productName) + "/" + referenceId;
+    return getReferenceIdForTagOrLocation(productName) + "-" + referenceId;
   }
 }
