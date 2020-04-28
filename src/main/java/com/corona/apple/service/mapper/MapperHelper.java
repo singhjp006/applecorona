@@ -12,7 +12,6 @@ import com.corona.apple.dao.model.TagClick;
 import com.corona.apple.dto.*;
 import com.corona.apple.dto.request.CreateProductRequest;
 import org.springframework.data.domain.Page;
-import sun.awt.X11.XPropertyEvent;
 
 public class MapperHelper {
 
@@ -168,5 +167,19 @@ public class MapperHelper {
   private static String getUrlSlug(String productName, String referenceId) {
     //TODO: change the name of the method used below. because we are using it here as well with some other purpose
     return getReferenceIdForTagOrLocation(productName) + "-" + referenceId;
+  }
+
+  public static LocationsResponse toLocationsResponse(Iterable<Location> locations) {
+    LocationsResponse locationsResponse = new LocationsResponse();
+    List<LocationResponse> locationResponses = new ArrayList<>();
+    locations.forEach(location -> {
+      LocationResponse locationResponse = new LocationResponse();
+      locationResponse.setReferenceId(location.getReferenceId());
+      locationResponse.setName(location.getName());
+      locationResponses.add(locationResponse);
+    });
+
+    locationsResponse.setLocationResponses(locationResponses);
+    return locationsResponse;
   }
 }

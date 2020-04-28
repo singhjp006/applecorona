@@ -6,10 +6,7 @@ import java.util.Optional;
 
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
-import com.corona.apple.dto.ProductResponse;
-import com.corona.apple.dto.ProductsResponse;
-import com.corona.apple.dto.SingleProductResponse;
-import com.corona.apple.dto.TagsResponse;
+import com.corona.apple.dto.*;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.service.HelperClass;
 import com.corona.apple.service.LocationService;
@@ -79,10 +76,12 @@ public class ProductController {
     return tagService.getTags();
   }
 
-//  public @ResponseBody LocationsResponse getLocations() {
-//    return locationService.getLocations();
-//  }
-//
+  @ApiOperation(response = LocationsResponse.class, value = "getLocations")
+  @GetMapping(path = "/locations")
+  public @ResponseBody LocationsResponse getLocations() {
+    return locationService.getLocations();
+  }
+
 
   @ApiOperation(response = ProductsResponse.class, value = "getProducts")
   @GetMapping(path = "/products")
