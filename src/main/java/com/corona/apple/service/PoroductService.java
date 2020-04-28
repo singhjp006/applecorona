@@ -65,7 +65,7 @@ public class PoroductService {
         // helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
         // hard coding for testing to avoid hitting aws again and again.
         String imageS3Url =
-                "https://apple-corona-product-images.s3.ap-south-1.amazonaws.com/54b17e6c6aebb44f5fc3621af5a11033.png";
+                "https://kinsta.com/wp-content/uploads/2017/04/change-wordpress-url-1.png";
 
         Product product = MapperHelper.toProduct(createProductRequest, imageS3Url, tags, location);
 
