@@ -120,36 +120,34 @@ public class PoroductService {
                 CommonUtils.getDefaultPaginationObject(offset.intValue(), limit.intValue());
 
 //        Page<Product> pages = productRepository.getAllByTags(tags);
-        List<Tag> tags = null;
+        List<Tag> tags = new ArrayList<>();
         if (tagReferences.isPresent()) {
             tags = tagRepository.getAllByReferenceIdIn(tagReferences.get());
         }
 
-        List<Location> locations = null;
+        List<Location> locations = new ArrayList<>();
         if (locationReference.isPresent()) {
             List<String> locationReferenceIds = new ArrayList<>();
-            locationReferenceIds.add("global");
+            if (!locationReference.get().equals("global")) {
+                locationReferenceIds.add("global");
+            }
             locationReferenceIds.add(locationReference.get());
             locations = locationRepository.getAllByReferenceIdIn(locationReferenceIds);
         }
 
         Page<Product> products;
-        if (!(tagReferences.isPresent() && locationReference.isPresent())) {
+        if ((!(tagReferences.isPresent()) && !(locationReference.isPresent()))) {
             products = productRepository.getAllByIsActive(true, paginationConfig);
         } else if (!tagReferences.isPresent()) {
             products = productRepository.getAllByLocationIn(locations, paginationConfig);
         } else if (!locationReference.isPresent()) {
             products = productRepository.getAllByTagsIn(tags, paginationConfig);
         } else { // both present
+            //passing List<Tag> still saying expected arraylist and you are sending Tag
             products = productRepository.getAllByTagsAndLocations(tags, locations, paginationConfig);
         }
 
         return MapperHelper.toProductsResponse(products, limit, offset);
-
-//        List<Product> productRegetAllByTagsAndLocation()
-//        if (tagReferences.isPresent()) {
-//            List<Tag> tags = tagService.getTags(tagReferences.get());
-//        }
 
 
 

@@ -12,6 +12,7 @@ import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.service.HelperClass;
+import com.corona.apple.service.LocationService;
 import com.corona.apple.service.PoroductService;
 import com.corona.apple.service.TagService;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +40,9 @@ public class ProductController {
   @Autowired HelperClass helperClass;
 
   @Autowired PoroductService poroductService;
+
+  @Autowired
+  LocationService locationService;
 
   @Autowired
   TagService tagService;
@@ -74,10 +78,11 @@ public class ProductController {
   public @ResponseBody TagsResponse getTags() {
     return tagService.getTags();
   }
-//
+
 //  public @ResponseBody LocationsResponse getLocations() {
-//    return locationService.
+//    return locationService.getLocations();
 //  }
+//
 
   @ApiOperation(response = ProductsResponse.class, value = "getProducts")
   @GetMapping(path = "/products")
