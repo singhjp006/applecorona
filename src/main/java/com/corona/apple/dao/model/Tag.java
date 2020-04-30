@@ -33,6 +33,11 @@ public class Tag implements Serializable {
 
     Date updatedAt;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    TagClick tagClick;
+    long views=0l;
+
+    long accessCount=0l;
+
+    double popularity;
+
+
 }

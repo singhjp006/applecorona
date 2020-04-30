@@ -3,15 +3,14 @@ package com.corona.apple.dao.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -20,6 +19,8 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.URL;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Data
@@ -50,13 +51,18 @@ public class Product implements Serializable {
   @Column(columnDefinition = "BOOLEAN")
   Boolean isActive;
 
-  @NotNull Date createdAt;
+  @CreatedDate Date createdAt;
 
-  Date updatedAt;
+  @LastModifiedDate Date updatedAt;
 
   @ManyToMany(targetEntity = Tag.class)
   List<Tag> tags;
 
-  @OneToOne(cascade = CascadeType.ALL)
-  ProductClick productClick;
+  Long views = 0l;
+
+  Long accessCount = 0l;
+
+  double popularity;
+
+  @ElementCollection List<String> badges;
 }

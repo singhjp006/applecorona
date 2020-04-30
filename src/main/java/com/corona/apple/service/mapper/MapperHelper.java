@@ -1,18 +1,23 @@
 package com.corona.apple.service.mapper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import com.corona.apple.Badges;
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
-import com.corona.apple.dao.model.ProductClick;
 import com.corona.apple.dao.model.Tag;
-import com.corona.apple.dao.model.TagClick;
-import com.corona.apple.dto.*;
+import com.corona.apple.dto.LocationResponse;
+import com.corona.apple.dto.PaginatedResponse;
+import com.corona.apple.dto.ProductResponse;
+import com.corona.apple.dto.SingleProductResponse;
+import com.corona.apple.dto.TagResponse;
+import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import org.springframework.data.domain.Page;
-import sun.awt.X11.XPropertyEvent;
 
 public class MapperHelper {
 
@@ -35,7 +40,8 @@ public class MapperHelper {
     productEntity.setTags(tags);
     productEntity.setUrl(createProductRequest.getUrl());
     productEntity.setLocation(location);
-    productEntity.setProductClick(getProductClick(productEntity));
+    productEntity.setBadges(Collections.singletonList(Badges.NEW.name()));
+
 
     return productEntity;
   }
@@ -58,15 +64,10 @@ public class MapperHelper {
     tagEntity.setIsActive(true);
     tagEntity.setName(name.trim());
     tagEntity.setReferenceId(getReferenceIdForTagOrLocation(name));
-    tagEntity.setTagClick(getTagClick(tagEntity));
     return tagEntity;
   }
 
-  private static TagClick getTagClick(Tag tag) {
-    TagClick tagClick = new TagClick();
-    tagClick.setTag(tag);
-    return tagClick;
-  }
+
 
   private static String getReferenceIdForTagOrLocation(String name) {
     return name.trim().replaceAll("\\s+", "-").toLowerCase();
@@ -80,42 +81,34 @@ public class MapperHelper {
     return location;
   }
 
-  private static ProductClick getProductClick(Product product) {
 
-    ProductClick productClick = new ProductClick();
-    productClick.setProduct(product);
-    return productClick;
-  }
 
-  public static ProductsResponse toProductsResponse(Page<Product> products, Long limit, Long offset) {
-    ProductsResponse response = new ProductsResponse();
-
-    PaginationResponse pagination = new PaginationResponse();
-    pagination.setLimit(limit);
-    pagination.setOffset(offset);
-    pagination.setTotal(products.getTotalElements());
-    response.setPagination(pagination);
+  public static PaginatedResponse<ProductResponse> toProductsResponse(
+      Page<Product> products, Long limit, Long offset) {
 
     List<ProductResponse> productsResponse = new ArrayList<>();
 
-    products.get().forEach(product -> {
-        ProductResponse productResponse = new ProductResponse();
+    products
+        .get()
+        .forEach(
+            product -> {
+              ProductResponse productResponse = new ProductResponse();
 
-        productResponse.setTags(toTagsResponse(product.getTags()).getTags());
-        productResponse.setImageUrl(product.getImageUrl());
-        productResponse.setUrl(product.getUrl());
-        productResponse.setLocation(toLocationResponse(product.getLocation()));
-        productResponse.setName(product.getName());
-        productResponse.setUrlSlug(getUrlSlug(product.getName(), product.getReferenceId()));
-        productResponse.setReferenceId(product.getReferenceId());
-        productResponse.setShortDescription(product.getShortDescription());
+              productResponse.setTags(toTagsResponse(product.getTags()).getTags());
+              productResponse.setImageUrl(product.getImageUrl());
+              productResponse.setUrl(product.getUrl());
+              productResponse.setLocation(toLocationResponse(product.getLocation()));
+              productResponse.setName(product.getName());
+              productResponse.setUrlSlug(getUrlSlug(product.getName(), product.getReferenceId()));
+              productResponse.setReferenceId(product.getReferenceId());
+              productResponse.setShortDescription(product.getShortDescription());
+              productResponse.setPopularity(product.getPopularity());
 
-        productsResponse.add(productResponse);
-    });
+              productsResponse.add(productResponse);
+            });
 
-    response.setProducts(productsResponse);
+    return PaginatedResponse.from(productsResponse, products.getTotalElements(), offset, limit);
 
-    return response;
   }
 
   private static LocationResponse toLocationResponse(Location location) {
@@ -125,11 +118,13 @@ public class MapperHelper {
     return response;
   }
 
-  public static List<String> tagsToString(List<Tag> tags) {
+  public static List<String> getTagReferences(List<Tag> tags) {
     List<String> response = new ArrayList<>();
-    tags.stream().forEach(tag -> {
-      response.add(tag.getName());
-    });
+    tags.stream()
+        .forEach(
+            tag -> {
+              response.add(tag.getReferenceId());
+            });
     return response;
   }
 
@@ -138,19 +133,22 @@ public class MapperHelper {
 
     List<TagResponse> tags = new ArrayList<>();
 
-    tagEntities.stream().forEach(tagEntity -> {
-      TagResponse tagResponse = new TagResponse();
-      tagResponse.setName(tagEntity.getName());
-      tagResponse.setReferenceId(tagEntity.getReferenceId());
+    tagEntities.stream()
+        .forEach(
+            tagEntity -> {
+              TagResponse tagResponse = new TagResponse();
+              tagResponse.setName(tagEntity.getName());
+              tagResponse.setReferenceId(tagEntity.getReferenceId());
 
-      tags.add(tagResponse);
-    });
+              tags.add(tagResponse);
+            });
 
     tagsResponse.setTags(tags);
     return tagsResponse;
   }
 
-  public static SingleProductResponse toSingleProductResponse(Product product, List<ProductResponse> similarProducts) {
+  public static SingleProductResponse toSingleProductResponse(
+      Product product, List<ProductResponse> similarProducts) {
     SingleProductResponse response = new SingleProductResponse();
     response.setImageUrl(product.getImageUrl());
     response.setLocation(toLocationResponse(product.getLocation()));
@@ -162,11 +160,14 @@ public class MapperHelper {
     response.setShortDescription(product.getShortDescription());
     response.setTags(toTagsResponse(product.getTags()).getTags());
     response.setSimilarProducts(similarProducts);
+    response.setPopularity(product.getPopularity());
+    response.setBadges(product.getBadges());
     return response;
   }
 
   private static String getUrlSlug(String productName, String referenceId) {
-    //TODO: change the name of the method used below. because we are using it here as well with some other purpose
+    // TODO: change the name of the method used below. because we are using it here as well with
+    // some other purpose
     return getReferenceIdForTagOrLocation(productName) + "-" + referenceId;
   }
 }

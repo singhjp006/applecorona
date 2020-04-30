@@ -8,6 +8,8 @@
     <artifactId>apple-corona</artifactId>
     <version>1.0-SNAPSHOT</version>
 
+
+
     <properties>
         <java.version>1.8</java.version>
         <spring-boot-ad-cp.version>2.1.3.RELEASE</spring-boot-ad-cp.version>

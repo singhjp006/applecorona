@@ -21,5 +21,6 @@ public class SingleProductResponse implements Serializable {
     LocationResponse location;
     List<String> badges;
     List<TagResponse> tags;
+    double popularity;
     List<ProductResponse> similarProducts = new ArrayList<>();
 }

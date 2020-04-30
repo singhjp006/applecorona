@@ -11,14 +11,20 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PaginatedResponse<T> {
 
-    long totalElements;
+    long total;
 
-    List<T> responses = new ArrayList<>();
+    long offset;
 
-    public static <T> PaginatedResponse<T> from(final List<T> responses, final long totalElements) {
+    long limit;
+
+    List<T> data = new ArrayList<>();
+
+    public static <T> PaginatedResponse<T> from(final List<T> responses, final long totalElements,long offset,long limit) {
         final PaginatedResponse<T> paginatedResponse = new PaginatedResponse<>();
-        paginatedResponse.setResponses(responses);
-        paginatedResponse.setTotalElements(totalElements);
+        paginatedResponse.setData(responses);
+        paginatedResponse.setTotal(totalElements);
+        paginatedResponse.setOffset(offset);
+        paginatedResponse.setLimit(limit);
         return paginatedResponse;
     }
 }

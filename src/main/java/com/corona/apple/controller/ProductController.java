@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
+import com.corona.apple.dto.PaginatedResponse;
 import com.corona.apple.dto.ProductResponse;
 import com.corona.apple.dto.ProductsResponse;
 import com.corona.apple.dto.SingleProductResponse;
@@ -79,14 +80,11 @@ public class ProductController {
     return tagService.getTags();
   }
 
-//  public @ResponseBody LocationsResponse getLocations() {
-//    return locationService.getLocations();
-//  }
-//
 
   @ApiOperation(response = ProductsResponse.class, value = "getProducts")
   @GetMapping(path = "/products")
-  public @ResponseBody ProductsResponse getProducts(@RequestParam(required = false) Optional<List<String>> tagReferences, @RequestParam(required = false) Optional<String> locationReference, @RequestParam(defaultValue = "0") Long offset, @RequestParam(defaultValue = "30") Long limit) {
+  public @ResponseBody
+  PaginatedResponse<ProductResponse> getProducts(@RequestParam(required = false) Optional<List<String>> tagReferences, @RequestParam(required = false) Optional<String> locationReference, @RequestParam(defaultValue = "0") Long offset, @RequestParam(defaultValue = "30") Long limit) {
     return poroductService.getProducts(tagReferences, locationReference, offset, limit);
   }
 
@@ -96,16 +94,6 @@ public class ProductController {
     return poroductService.getProduct(referenceId, getSimilar);
   }
 
-//  @ApiOperation(
-//      response = Location.class,
-//      value = "getProduct",
-//      produces = MediaType.APPLICATION_JSON_VALUE)
-//  @PostMapping(path = "/products/{productId}")
-//  public @ResponseBody Product getProduct(@RequestBody CreateProductRequest createProductRequest)
-//      throws IOException {
-//    return poroductService.createProduct(createProductRequest);
-//  }
-
   @ApiOperation(
       response = Location.class,
       value = "Open Product",
@@ -113,7 +101,7 @@ public class ProductController {
   @GetMapping(path = "/products/{referenceId}/open")
   public @ResponseBody RedirectView openProduct(@PathVariable("referenceId") String referenceId) {
     RedirectView redirectView = new RedirectView();
-    String url = poroductService.recordImpression(referenceId);
+    String url = poroductService.recordClickImpression(referenceId);
     redirectView.setUrl(url);
     return redirectView;
   }
