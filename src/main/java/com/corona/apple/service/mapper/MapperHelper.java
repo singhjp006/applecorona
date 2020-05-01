@@ -157,6 +157,7 @@ public class MapperHelper {
     response.setName(product.getName());
     response.setReferenceId(product.getReferenceId());
     response.setUrl(product.getUrl());
+    response.setVideoEmbedUrl(product.getVideoEmbedUrl());
     response.setUrlSlug(getUrlSlug(product.getName(), product.getReferenceId()));
     response.setShortDescription(product.getShortDescription());
     response.setTags(toTagsResponse(product.getTags()).getTags());

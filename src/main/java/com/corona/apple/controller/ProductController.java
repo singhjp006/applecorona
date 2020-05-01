@@ -95,16 +95,6 @@ public class ProductController {
     return poroductService.getProduct(referenceId, getSimilar);
   }
 
-//  @ApiOperation(
-//      response = Location.class,
-//      value = "getProduct",
-//      produces = MediaType.APPLICATION_JSON_VALUE)
-//  @PostMapping(path = "/products/{productId}")
-//  public @ResponseBody Product getProduct(@RequestBody CreateProductRequest createProductRequest)
-//      throws IOException {
-//    return poroductService.createProduct(createProductRequest);
-//  }
-
   @ApiOperation(
       response = Location.class,
       value = "Open Product",

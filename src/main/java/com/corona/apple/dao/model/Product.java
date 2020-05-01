@@ -42,6 +42,8 @@ public class Product implements Serializable {
 
   @URL String imageUrl;
 
+  @URL String videoEmbedUrl;
+
   @NotNull @JsonIgnore @ManyToOne Location location;
 
   String developedBy;
