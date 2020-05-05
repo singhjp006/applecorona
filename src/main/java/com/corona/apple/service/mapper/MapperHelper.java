@@ -83,7 +83,7 @@ public class MapperHelper {
 
 
 
-  public static PaginatedResponse<ProductResponse> toProductsResponse(
+  public static PaginatedResponse<ProductResponse> toProductResponses(
       Page<Product> products, Long limit, Long offset) {
 
     List<ProductResponse> productsResponse = new ArrayList<>();

@@ -20,15 +20,17 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
 
   List<Product> getAllByLocation(Location location);
 
-  Page<Product> getAllByIsActiveOrderByPopularityDesc(Boolean isActive, Pageable paginationConfig);
+  Page<Product> getAllByIsActiveOrderByPopularity(Boolean isActive, Pageable paginationConfig);
 
-  Page<Product> getAllByLocationInOrderByPopularityDesc(
+  Page<Product> getAllByLocationInOrderByPopularity(
       List<Location> locations, Pageable paginationConfig);
 
-  Page<Product> getAllByTagsInOrderByPopularityDesc(List<Tag> tags, Pageable paginationConfig);
+  Page<Product> getAllByTagsInOrderByPopularity(List<Tag> tags, Pageable paginationConfig);
 
-  Page<Product> getAllByTagsInAndLocationInOrderByPopularityDesc(
+  Page<Product> getAllByTagsInAndLocationInOrderByPopularity(
       List<Tag> tags, List<Location> locations, Pageable pageable);
+
+  Page<Product> getAllByTagsInAndLocationInAndIdNot( List<Tag> tags, List<Location> locations, Long id,Pageable pageable);
 
   Optional<Product> getByReferenceId(String referenceId);
 }

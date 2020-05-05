@@ -2,6 +2,7 @@ package com.corona.apple.service;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -72,7 +73,8 @@ public class PoroductService {
       Long limit) {
 
     Pageable paginationConfig =
-        CommonUtils.getDefaultPaginationObject(offset.intValue(), limit.intValue());
+        CommonUtils.getDefaultPaginationObject(
+            offset.intValue(), limit.intValue(), "popularity", false);
 
     List<Tag> tags = new ArrayList<>();
     if (tagReferences.isPresent()) {
@@ -90,19 +92,20 @@ public class PoroductService {
 
     Page<Product> products;
     if ((!(tagReferences.isPresent()) && !(locationReference.isPresent()))) {
-      products = productRepository.getAllByIsActiveOrderByPopularityDesc(true, paginationConfig);
+      products = productRepository.getAllByIsActiveOrderByPopularity(true, paginationConfig);
     } else if (!tagReferences.isPresent()) {
-      products = productRepository.getAllByLocationInOrderByPopularityDesc(locations, paginationConfig);
+      products =
+          productRepository.getAllByLocationInOrderByPopularity(locations, paginationConfig);
     } else if (!locationReference.isPresent()) {
-      products = productRepository.getAllByTagsInOrderByPopularityDesc(tags, paginationConfig);
+      products = productRepository.getAllByTagsInOrderByPopularity(tags, paginationConfig);
     } else { // both present
       // passing List<Tag> still saying expected arraylist and you are sending Tag
       products =
-          productRepository.getAllByTagsInAndLocationInOrderByPopularityDesc(
+          productRepository.getAllByTagsInAndLocationInOrderByPopularity(
               tags, locations, paginationConfig);
     }
 
-    return MapperHelper.toProductsResponse(products, limit, offset);
+    return MapperHelper.toProductResponses(products, limit, offset);
   }
 
   public SingleProductResponse getProduct(String referenceId, Boolean shouldGetSimilar) {
@@ -194,17 +197,29 @@ public class PoroductService {
       throw new RuntimeException("Exception while recording impression");
     }
 
-    return product.get().getUrl();
+    return product.get().getUrl()+"?ref=https://coronadaily.org/";
   }
 
-  private List<ProductResponse> getSimilarProducts(Product product, Long count) {
-    List<String> tagReferences = MapperHelper.getTagReferences(product.getTags());
+  private List<ProductResponse> getSimilarProducts(Product product, Long limit) {
 
-    return getProducts(
-            Optional.of(tagReferences),
-            Optional.of(product.getLocation().getReferenceId()),
-            0l,
-            count)
-        .getData();
+    Pageable pageable =
+        CommonUtils.getDefaultPaginationObject(0, limit.intValue(), "popularity", false);
+
+    Page<Product> responses =
+        productRepository.getAllByTagsInAndLocationInAndIdNot(
+            product.getTags(), Arrays.asList(product.getLocation()), product.getId(), pageable);
+
+    if (responses.getContent().size() < limit) {
+      Location global = locationRepository.getByReferenceId("global");
+
+      responses =
+          productRepository.getAllByTagsInAndLocationInAndIdNot(
+              product.getTags(),
+              Arrays.asList(product.getLocation(), global),
+              product.getId(),
+              pageable);
+    }
+
+    return MapperHelper.toProductResponses(responses, limit, 0l).getData();
   }
 }

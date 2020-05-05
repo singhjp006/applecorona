@@ -22,23 +22,29 @@ public interface CommonUtils {
   }
 
   static void feedProductAccessCount(Product product) throws ParseException {
-    product.setAccessCount(product.getAccessCount()+1);
-    product.setPopularity(CommonUtils.getPopularity(product.getViews(), product.getAccessCount(), product.getCreatedAt()));
+    product.setAccessCount(product.getAccessCount() + 1);
+    product.setPopularity(
+        CommonUtils.getPopularity(
+            product.getViews(), product.getAccessCount(), product.getCreatedAt()));
   }
 
   static void feedProductView(Product product) throws ParseException {
-    product.setViews(product.getViews()+1);
-    product.setPopularity(CommonUtils.getPopularity(product.getViews(), product.getAccessCount(), product.getCreatedAt()));
+    product.setViews(product.getViews() + 1);
+    product.setPopularity(
+        CommonUtils.getPopularity(
+            product.getViews(), product.getAccessCount(), product.getCreatedAt()));
   }
 
   static void feedTagAccessCount(Tag tag) throws ParseException {
-    tag.setAccessCount(tag.getAccessCount()+1);
-    tag.setPopularity(CommonUtils.getPopularity(tag.getViews(), tag.getAccessCount(), tag.getCreatedAt()));
+    tag.setAccessCount(tag.getAccessCount() + 1);
+    tag.setPopularity(
+        CommonUtils.getPopularity(tag.getViews(), tag.getAccessCount(), tag.getCreatedAt()));
   }
 
   static void feedTagView(Tag tag) throws ParseException {
-    tag.setViews(tag.getViews()+1);
-    tag.setPopularity(CommonUtils.getPopularity(tag.getViews(), tag.getAccessCount(), tag.getCreatedAt()));
+    tag.setViews(tag.getViews() + 1);
+    tag.setPopularity(
+        CommonUtils.getPopularity(tag.getViews(), tag.getAccessCount(), tag.getCreatedAt()));
   }
 
   static double getPopularity(long views, long accessCount, Date createdAt) throws ParseException {
@@ -51,7 +57,9 @@ public interface CommonUtils {
     return Math.log10(views + accessCount) + timeDiff * CommonUtils.popularityTimeFactor;
   }
 
-  static Pageable getDefaultPaginationObject(final Integer from, final Integer size) {
-    return PageRequest.of(from / size, size, Sort.by("createdAt").descending());
+  static Pageable getDefaultPaginationObject(
+      final Integer from, final Integer size, String sortField, boolean ascending) {
+    Sort sort = ascending ? Sort.by(sortField).ascending() : Sort.by(sortField).descending();
+    return PageRequest.of(from / size, size, sort);
   }
 }
