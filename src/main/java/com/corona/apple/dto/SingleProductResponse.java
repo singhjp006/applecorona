@@ -16,11 +16,14 @@ public class SingleProductResponse implements Serializable {
     String shortDescription;
     String longDescription;
     String imageUrl;
+    String androidUrl;
+    String iosUrl;
     String videoEmbedUrl;
     String url;
     String urlSlug;
     LocationResponse location;
     List<String> badges;
     List<TagResponse> tags;
+    double popularity;
     List<ProductResponse> similarProducts = new ArrayList<>();
 }

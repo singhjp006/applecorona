@@ -17,4 +17,6 @@ public interface LocationRepository extends CrudRepository<Location, Long> {
 
 //    @Query("SELECT l FROM Location l WHERE referenceId IN (:referenceIds) AND isActive=1")
     List<Location> getAllByReferenceIdIn(List<String> referenceIds);
+
+    Location getByReferenceId(String ref);
 }
