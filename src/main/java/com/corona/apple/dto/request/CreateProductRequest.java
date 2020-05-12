@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.experimental.FieldDefaults;
 
 import java.io.Serializable;
+import java.net.URL;
 import java.util.List;
 
 @Data
@@ -14,11 +15,14 @@ public class CreateProductRequest implements Serializable {
     String name;
     String shortDescription;
     String longDescription;
-    String url;
+    URL url;
     String imageUrl;
     String locationName;
     String developedBy;
     List<String> tags;
     Boolean isActive;
+    URL androidAppUrl;
+    URL iosAppUrl;
+    URL videoUrl;
 
 }

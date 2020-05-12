@@ -44,6 +44,10 @@ public class Product implements Serializable {
 
   @URL String videoEmbedUrl;
 
+  @URL String androidAppUrl;
+
+  @URL String iosAppUrl;
+
   @NotNull @JsonIgnore @ManyToOne Location location;
 
   String developedBy;

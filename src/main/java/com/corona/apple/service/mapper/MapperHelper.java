@@ -32,7 +32,10 @@ public class MapperHelper {
     productEntity.setName(createProductRequest.getName().trim());
     productEntity.setReferenceId(getReferenceIdForProduct(createProductRequest.getName().trim()));
     productEntity.setTags(tags);
-    productEntity.setUrl(createProductRequest.getUrl());
+    productEntity.setUrl(createProductRequest.getUrl().toString());
+    productEntity.setVideoEmbedUrl(createProductRequest.getVideoUrl().toString());
+    productEntity.setAndroidAppUrl(createProductRequest.getAndroidAppUrl().toString());
+    productEntity.setIosAppUrl(createProductRequest.getIosAppUrl().toString());
     productEntity.setLocation(location);
     productEntity.setProductClick(getProductClick(productEntity));
 
