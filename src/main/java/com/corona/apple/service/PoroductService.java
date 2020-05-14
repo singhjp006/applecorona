@@ -244,6 +244,11 @@ public class PoroductService {
 
     for (int i = 1; i < rowCount; i++) {
       Row currRow = activeSheet.getRow(i);
+
+      if (!currRow.getCell(6).getStringCellValue().equals("review")){
+        continue;
+      }
+
       CreateProductRequest createProductRequest = new CreateProductRequest();
       if (currRow.getCell(0) != null && currRow.getCell(0).getStringCellValue() != null && !currRow.getCell(0).getStringCellValue().isEmpty()) {
         createProductRequest.setName(currRow.getCell(0).getStringCellValue());
