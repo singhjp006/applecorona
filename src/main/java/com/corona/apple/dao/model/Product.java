@@ -18,6 +18,7 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -35,8 +36,10 @@ public class Product implements Serializable {
 
   @NotNull String name;
 
+  @Column(columnDefinition = "TEXT")
   String shortDescription;
 
+  @Column(columnDefinition = "TEXT")
   String longDescription;
 
   @NotNull @URL String url;

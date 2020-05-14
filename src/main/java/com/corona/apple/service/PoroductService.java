@@ -1,10 +1,10 @@
 package com.corona.apple.service;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.corona.apple.CommonUtils;
 import com.corona.apple.dao.model.Location;
@@ -21,6 +21,10 @@ import com.corona.apple.service.mapper.MapperHelper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -221,5 +225,68 @@ public class PoroductService {
     }
 
     return MapperHelper.toProductResponses(responses, limit, 0l).getData();
+  }
+
+  public Boolean importProducts(File file) throws IOException, InvalidFormatException {
+    byte[] bytesArray = MapperHelper.convertFileToBytesArray(file);
+
+    Date timestamp = new Date();
+
+    MapperHelper.writeByteArrayToFile(bytesArray, "/tmp/", timestamp.toString());
+
+    File excelFile = new File("/tmp/" + timestamp.toString());
+
+    XSSFWorkbook excelWorkbook = new XSSFWorkbook(excelFile);
+
+    Sheet activeSheet = excelWorkbook.getSheetAt(0);
+
+    int rowCount = (activeSheet.getLastRowNum() - activeSheet.getFirstRowNum()) + 1;
+
+    for (int i = 1; i < rowCount; i++) {
+      Row currRow = activeSheet.getRow(i);
+      CreateProductRequest createProductRequest = new CreateProductRequest();
+      if (currRow.getCell(0) != null && currRow.getCell(0).getStringCellValue() != null && !currRow.getCell(0).getStringCellValue().isEmpty()) {
+        createProductRequest.setName(currRow.getCell(0).getStringCellValue());
+      }
+      if (currRow.getCell(1) != null && currRow.getCell(1).getStringCellValue() != null && !currRow.getCell(1).getStringCellValue().isEmpty()) {
+        createProductRequest.setShortDescription(currRow.getCell(1).getStringCellValue());
+      }
+      if (currRow.getCell(2) != null && currRow.getCell(2).getStringCellValue() != null && !currRow.getCell(2).getStringCellValue().isEmpty()) {
+        List<String> tags = parseCommaSeparatedTags(currRow.getCell(0).getStringCellValue());
+        createProductRequest.setTags(tags);
+      }
+      if (currRow.getCell(3) != null && currRow.getCell(3).getStringCellValue() != null && !currRow.getCell(3).getStringCellValue().isEmpty()) {
+        createProductRequest.setUrl(new URL(currRow.getCell(3).getStringCellValue()));
+      }
+      if (currRow.getCell(4) != null && currRow.getCell(4).getStringCellValue() != null && !currRow.getCell(4).getStringCellValue().isEmpty()) {
+        createProductRequest.setLongDescription(currRow.getCell(4).getStringCellValue());
+      }
+      if (currRow.getCell(5) != null && currRow.getCell(5).getStringCellValue() != null && !currRow.getCell(5).getStringCellValue().isEmpty()) {
+        createProductRequest.setImageUrl(currRow.getCell(5).getStringCellValue());
+      }
+      if (currRow.getCell(8) != null && currRow.getCell(8).getStringCellValue() != null && !currRow.getCell(8).getStringCellValue().isEmpty()) {
+        createProductRequest.setVideoUrl(new URL(currRow.getCell(8).getStringCellValue()));
+      }
+      if (currRow.getCell(9) != null && currRow.getCell(9).getStringCellValue() != null && !currRow.getCell(9).getStringCellValue().isEmpty()) {
+        createProductRequest.setAndroidAppUrl(new URL(currRow.getCell(9).getStringCellValue()));
+      }
+      if (currRow.getCell(10) != null && currRow.getCell(10).getStringCellValue() != null && !currRow.getCell(10).getStringCellValue().isEmpty()) {
+        createProductRequest.setIosAppUrl(new URL(currRow.getCell(10).getStringCellValue()));
+      }
+      if (currRow.getCell(11) != null && currRow.getCell(11).getStringCellValue() != null && !currRow.getCell(11).getStringCellValue().isEmpty()) {
+        createProductRequest.setLocationName(currRow.getCell(11).getStringCellValue());
+      }
+      createProductRequest.setIsActive(true);
+      createProductRequest.setDevelopedBy("nobody");
+      if (createProductRequest != null) {
+        createProduct(createProductRequest);
+      }
+    }
+
+    return true;
+  }
+
+  private List<String> parseCommaSeparatedTags(String string) {
+    return Arrays.asList(string.trim().split("\\s*,\\s*"));
   }
 }

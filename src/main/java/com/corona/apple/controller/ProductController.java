@@ -13,9 +13,12 @@ import com.corona.apple.service.HelperClass;
 import com.corona.apple.service.LocationService;
 import com.corona.apple.service.PoroductService;
 import com.corona.apple.service.TagService;
+import com.corona.apple.service.mapper.MapperHelper;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -117,5 +120,12 @@ public class ProductController {
     String url = poroductService.recordClickImpression(referenceId);
     redirectView.setUrl(url);
     return redirectView;
+  }
+
+  @ApiOperation(response = Boolean.class, value = "Import Products")
+  @PostMapping(path = "/products/import")
+  public @ResponseBody Boolean importProducts(@RequestParam("file") MultipartFile excelMultipartFile) throws IOException, InvalidFormatException {
+
+    return poroductService.importProducts(MapperHelper.convertMultipartToFile(excelMultipartFile));
   }
 }

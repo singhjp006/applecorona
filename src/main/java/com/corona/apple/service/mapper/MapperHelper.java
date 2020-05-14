@@ -1,5 +1,6 @@
 package com.corona.apple.service.mapper;
 
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -18,6 +19,7 @@ import com.corona.apple.dto.TagResponse;
 import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 public class MapperHelper {
 
@@ -39,9 +41,16 @@ public class MapperHelper {
     productEntity.setReferenceId(getReferenceIdForProduct(createProductRequest.getName().trim()));
     productEntity.setTags(tags);
     productEntity.setUrl(createProductRequest.getUrl().toString());
-    productEntity.setVideoEmbedUrl(createProductRequest.getVideoUrl().toString());
-    productEntity.setAndroidAppUrl(createProductRequest.getAndroidAppUrl().toString());
-    productEntity.setIosAppUrl(createProductRequest.getIosAppUrl().toString());
+    if (createProductRequest.getVideoUrl() != null) {
+      productEntity.setVideoEmbedUrl(createProductRequest.getVideoUrl().toString());
+    }
+    if (createProductRequest.getAndroidAppUrl() != null) {
+      productEntity.setAndroidAppUrl(createProductRequest.getAndroidAppUrl().toString());
+    }
+    if (createProductRequest.getIosAppUrl() != null) {
+      productEntity.setIosAppUrl(createProductRequest.getIosAppUrl().toString());
+    }
+
     productEntity.setLocation(location);
     productEntity.setBadges(Collections.singletonList(Badges.NEW.name()));
 
@@ -184,5 +193,30 @@ public class MapperHelper {
 
     locationsResponse.setLocationResponses(locationResponses);
     return locationsResponse;
+  }
+
+  public static File convertMultipartToFile(MultipartFile excelMultipartFile) throws IOException {
+    File convFile = new File(excelMultipartFile.getOriginalFilename());
+    convFile.createNewFile();
+    FileOutputStream fos = new FileOutputStream(convFile);
+    fos.write(excelMultipartFile.getBytes());
+    fos.close();
+    return convFile;
+  }
+
+    public static byte[] convertFileToBytesArray(File file) throws IOException {
+      byte[] bytesArray = new byte[(int) file.length()];
+
+      FileInputStream fis = new FileInputStream(file);
+      fis.read(bytesArray); // read file into bytes[]
+      fis.close();
+
+      return bytesArray;
+    }
+
+  public static void writeByteArrayToFile(byte[] bytesArray, String fileLocation, String fileName) throws IOException {
+    OutputStream os = new FileOutputStream(fileLocation + fileName);
+    os.write(bytesArray);
+    os.close();
   }
 }
