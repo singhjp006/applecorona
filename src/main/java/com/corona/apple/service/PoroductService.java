@@ -252,23 +252,45 @@ public class PoroductService {
       CreateProductRequest createProductRequest = new CreateProductRequest();
       if (currRow.getCell(0) != null && currRow.getCell(0).getStringCellValue() != null && !currRow.getCell(0).getStringCellValue().isEmpty()) {
         createProductRequest.setName(currRow.getCell(0).getStringCellValue());
+      } else {
+        System.out.println("No name for this product at row with index: " + i);
+        continue;
       }
+
       if (currRow.getCell(1) != null && currRow.getCell(1).getStringCellValue() != null && !currRow.getCell(1).getStringCellValue().isEmpty()) {
         createProductRequest.setShortDescription(currRow.getCell(1).getStringCellValue());
+      } else {
+        System.out.println("No short description for: " + currRow.getCell(0).getStringCellValue());
+        continue;
       }
+
       if (currRow.getCell(2) != null && currRow.getCell(2).getStringCellValue() != null && !currRow.getCell(2).getStringCellValue().isEmpty()) {
         List<String> tags = parseCommaSeparatedTags(currRow.getCell(0).getStringCellValue());
         createProductRequest.setTags(tags);
+      } else {
+        System.out.println("No tags for: " + currRow.getCell(0).getStringCellValue());
+        continue;
       }
+
       if (currRow.getCell(3) != null && currRow.getCell(3).getStringCellValue() != null && !currRow.getCell(3).getStringCellValue().isEmpty()) {
         createProductRequest.setUrl(new URL(currRow.getCell(3).getStringCellValue()));
+      } else {
+        System.out.println("No URL for: " + currRow.getCell(0).getStringCellValue());
+        continue;
       }
       if (currRow.getCell(4) != null && currRow.getCell(4).getStringCellValue() != null && !currRow.getCell(4).getStringCellValue().isEmpty()) {
         createProductRequest.setLongDescription(currRow.getCell(4).getStringCellValue());
+      } else {
+        System.out.println("No long desc for: " + currRow.getCell(0).getStringCellValue());
+        continue;
       }
       if (currRow.getCell(5) != null && currRow.getCell(5).getStringCellValue() != null && !currRow.getCell(5).getStringCellValue().isEmpty()) {
         createProductRequest.setImageUrl(currRow.getCell(5).getStringCellValue());
+      } else {
+        System.out.println("No img url for: "+ currRow.getCell(0).getStringCellValue());
+        continue;
       }
+
       if (currRow.getCell(8) != null && currRow.getCell(8).getStringCellValue() != null && !currRow.getCell(8).getStringCellValue().isEmpty()) {
         createProductRequest.setVideoUrl(new URL(currRow.getCell(8).getStringCellValue()));
       }
@@ -280,14 +302,16 @@ public class PoroductService {
       }
       if (currRow.getCell(11) != null && currRow.getCell(11).getStringCellValue() != null && !currRow.getCell(11).getStringCellValue().isEmpty()) {
         createProductRequest.setLocationName(currRow.getCell(11).getStringCellValue());
+      } else {
+        createProductRequest.setLocationName("Global");
       }
       createProductRequest.setIsActive(true);
-      createProductRequest.setDevelopedBy("nobody");
+      createProductRequest.setDevelopedBy("");
       if (createProductRequest != null) {
-        createProduct(createProductRequest);
+        Product product = createProduct(createProductRequest);
+        System.out.println("Product created with name: " + product.getName());
       }
     }
-
     return true;
   }
 
