@@ -17,6 +17,7 @@ import com.corona.apple.dto.PaginatedResponse;
 import com.corona.apple.dto.ProductResponse;
 import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
+import com.corona.apple.dto.request.UpdateProductRequest;
 import com.corona.apple.service.mapper.MapperHelper;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -69,6 +70,30 @@ public class PoroductService {
     return productService.createProduct(product);
   }
 
+  public Product updateProduct(UpdateProductRequest createProductRequest) {
+
+//    Location location = locationService.getOrCreateLocation(createProductRequest.getLocationName());
+//
+//    List<Tag> tags = new ArrayList<>();
+//    createProductRequest
+//            .getTags()
+//            .forEach(
+//                    tagName -> {
+//                      tags.add(tagService.createTag(tagName));
+//                    });
+//
+//    //        String imageS3Url =
+//    // helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
+//    // hard coding for testing to avoid hitting aws again and again.
+//    String imageS3Url = "https://kinsta.com/wp-content/uploads/2017/04/change-wordpress-url-1.png";
+//
+//    Product product = MapperHelper.toProduct(createProductRequest, imageS3Url, tags, location);
+//
+//    product.setId();
+//
+//    return productRepository.save(product);
+    return null;
+  }
   // TODO sorting
   public PaginatedResponse<ProductResponse> getProducts(
       Optional<List<String>> tagReferences,
@@ -265,10 +290,10 @@ public class PoroductService {
       }
 
       if (currRow.getCell(2) != null && currRow.getCell(2).getStringCellValue() != null && !currRow.getCell(2).getStringCellValue().isEmpty()) {
-        List<String> tags = parseCommaSeparatedTags(currRow.getCell(0).getStringCellValue());
+        List<String> tags = parseCommaSeparatedTags(currRow.getCell(2).getStringCellValue());
         createProductRequest.setTags(tags);
       } else {
-        System.out.println("No tags for: " + currRow.getCell(0).getStringCellValue());
+        System.out.println("No tags for: " + currRow.getCell(2).getStringCellValue());
         continue;
       }
 
@@ -281,13 +306,13 @@ public class PoroductService {
       if (currRow.getCell(4) != null && currRow.getCell(4).getStringCellValue() != null && !currRow.getCell(4).getStringCellValue().isEmpty()) {
         createProductRequest.setLongDescription(currRow.getCell(4).getStringCellValue());
       } else {
-        System.out.println("No long desc for: " + currRow.getCell(0).getStringCellValue());
+        System.out.println("No long desc for: " + currRow.getCell(4).getStringCellValue());
         continue;
       }
       if (currRow.getCell(5) != null && currRow.getCell(5).getStringCellValue() != null && !currRow.getCell(5).getStringCellValue().isEmpty()) {
         createProductRequest.setImageUrl(currRow.getCell(5).getStringCellValue());
       } else {
-        System.out.println("No img url for: "+ currRow.getCell(0).getStringCellValue());
+        System.out.println("No img url for: "+ currRow.getCell(5).getStringCellValue());
         continue;
       }
 
@@ -305,6 +330,13 @@ public class PoroductService {
       } else {
         createProductRequest.setLocationName("Global");
       }
+
+      if (currRow.getCell(12) != null && currRow.getCell(12).getStringCellValue() != null && !currRow.getCell(12).getStringCellValue().isEmpty()) {
+        createProductRequest.setCuratorsPoint(Long.parseLong(currRow.getCell(12).getStringCellValue()));
+      } else {
+        createProductRequest.setCuratorsPoint(0l);
+      }
+
       createProductRequest.setIsActive(true);
       createProductRequest.setDevelopedBy("");
       if (createProductRequest != null) {

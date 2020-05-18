@@ -18,7 +18,6 @@ import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.URL;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -70,6 +69,8 @@ public class Product implements Serializable {
   Long views = 0l;
 
   Long accessCount = 0l;
+
+  Long curatorsPoint;
 
   double popularity;
 

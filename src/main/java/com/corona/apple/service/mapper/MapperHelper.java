@@ -18,6 +18,7 @@ import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.TagResponse;
 import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
+import com.corona.apple.dto.request.UpdateProductRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,10 +53,13 @@ public class MapperHelper {
     }
 
     productEntity.setLocation(location);
+    productEntity.setCuratorsPoint(createProductRequest.getCuratorsPoint());
     productEntity.setBadges(Collections.singletonList(Badges.NEW.name()));
 
     return productEntity;
   }
+
+
 
   private static String getReferenceIdForProduct(String productName) {
 

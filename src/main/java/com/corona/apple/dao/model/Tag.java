@@ -33,6 +33,8 @@ public class Tag implements Serializable {
 
     Date updatedAt;
 
+    Long curatorsPoint;
+
     long views=0l;
 
     long accessCount=0l;

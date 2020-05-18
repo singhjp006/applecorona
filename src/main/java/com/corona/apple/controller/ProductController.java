@@ -9,6 +9,7 @@ import com.corona.apple.dao.model.Product;
 import com.corona.apple.dto.PaginatedResponse;
 import com.corona.apple.dto.*;
 import com.corona.apple.dto.request.CreateProductRequest;
+import com.corona.apple.dto.request.UpdateProductRequest;
 import com.corona.apple.service.HelperClass;
 import com.corona.apple.service.LocationService;
 import com.corona.apple.service.PoroductService;
@@ -73,6 +74,17 @@ public class ProductController {
       throws IOException {
     return poroductService.createProduct(createProductRequest);
   }
+
+  @ApiOperation(
+          response = Location.class,
+          value = "updateProduct",
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(path = "/products")
+  public @ResponseBody Product updateProduct(@RequestBody UpdateProductRequest updateProductRequest)
+          throws IOException {
+    return poroductService.updateProduct(updateProductRequest);
+  }
+
 
   @ApiOperation(response = TagsResponse.class, value = "getTags")
   @GetMapping(path = "/tags")
