@@ -1,5 +1,6 @@
 package com.corona.apple.service;
 
+import com.corona.apple.client.AmazonS3Client;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
@@ -50,7 +51,6 @@ public class HelperClass {
 
         InputStream is = url.openStream();
 
-        return null;
-        //return AmazonS3Helper.uploadFileToS3(is, fileName, "apple-corona-product-images");
+        return AmazonS3Client.uploadFileToS3(is, fileName, "apple-corona-product-images");
     }
 }

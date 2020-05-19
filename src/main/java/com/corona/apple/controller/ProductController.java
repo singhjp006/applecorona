@@ -75,15 +75,15 @@ public class ProductController {
     return poroductService.createProduct(createProductRequest);
   }
 
-  @ApiOperation(
-          response = Location.class,
-          value = "updateProduct",
-          produces = MediaType.APPLICATION_JSON_VALUE)
-  @PostMapping(path = "/products")
-  public @ResponseBody Product updateProduct(@RequestBody UpdateProductRequest updateProductRequest)
-          throws IOException {
-    return poroductService.updateProduct(updateProductRequest);
-  }
+//  @ApiOperation(
+//          response = Location.class,
+//          value = "updateProduct",
+//          produces = MediaType.APPLICATION_JSON_VALUE)
+//  @PostMapping(path = "/products")
+//  public @ResponseBody Product updateProduct(@RequestBody UpdateProductRequest updateProductRequest)
+//          throws IOException {
+//    return poroductService.updateProduct(updateProductRequest);
+//  }
 
 
   @ApiOperation(response = TagsResponse.class, value = "getTags")

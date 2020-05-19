@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.util.*;
 
 import com.corona.apple.CommonUtils;
+import com.corona.apple.client.AmazonS3Client;
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
 import com.corona.apple.dao.model.Tag;
@@ -48,7 +49,9 @@ public class PoroductService {
 
   TagService tagService;
 
-  public Product createProduct(CreateProductRequest createProductRequest) {
+  HelperClass helperClass;
+
+  public Product createProduct(CreateProductRequest createProductRequest) throws IOException {
 
     Location location = locationService.getOrCreateLocation(createProductRequest.getLocationName());
 
@@ -60,10 +63,10 @@ public class PoroductService {
               tags.add(tagService.createTag(tagName));
             });
 
-    //        String imageS3Url =
-    // helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
+            String imageS3Url =
+     helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
     // hard coding for testing to avoid hitting aws again and again.
-    String imageS3Url = "https://kinsta.com/wp-content/uploads/2017/04/change-wordpress-url-1.png";
+//    String imageS3Url = "https://kinsta.com/wp-content/uploads/2017/04/change-wordpress-url-1.png";
 
     Product product = MapperHelper.toProduct(createProductRequest, imageS3Url, tags, location);
 
