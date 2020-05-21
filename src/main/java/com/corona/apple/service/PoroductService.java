@@ -237,14 +237,15 @@ public class PoroductService {
         CommonUtils.getDefaultPaginationObject(0, limit.intValue(), "popularity", false);
 
     Page<Product> responses =
-        productRepository.getAllByTagsInAndLocationInAndIdNot(
+        productRepository.getDistinctByTagsInAndLocationInAndIdNot(
             product.getTags(), Arrays.asList(product.getLocation()), product.getId(), pageable);
 
+    // TODO: 21/05/20 Improve
     if (responses.getContent().size() < limit) {
       Location global = locationRepository.getByReferenceId("global");
 
       responses =
-          productRepository.getAllByTagsInAndLocationInAndIdNot(
+          productRepository.getDistinctByTagsInAndLocationInAndIdNot(
               product.getTags(),
               Arrays.asList(product.getLocation(), global),
               product.getId(),

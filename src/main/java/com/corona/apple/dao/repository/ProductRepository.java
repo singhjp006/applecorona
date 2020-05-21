@@ -30,7 +30,7 @@ public interface ProductRepository extends CrudRepository<Product, Long> {
   Page<Product> getAllByTagsInAndLocationIn(
       List<Tag> tags, List<Location> locations, Pageable pageable);
 
-  Page<Product> getAllByTagsInAndLocationInAndIdNot( List<Tag> tags, List<Location> locations, Long id,Pageable pageable);
+  Page<Product> getDistinctByTagsInAndLocationInAndIdNot( List<Tag> tags, List<Location> locations, Long id,Pageable pageable);
 
   Optional<Product> getByReferenceId(String referenceId);
 }
