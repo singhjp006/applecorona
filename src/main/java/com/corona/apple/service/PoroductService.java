@@ -7,7 +7,6 @@ import java.text.ParseException;
 import java.util.*;
 
 import com.corona.apple.CommonUtils;
-import com.corona.apple.client.AmazonS3Client;
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
 import com.corona.apple.dao.model.Tag;
@@ -63,8 +62,8 @@ public class PoroductService {
               tags.add(tagService.createTag(tagName));
             });
 
-            String imageS3Url =
-     helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
+            String imageS3Url ="http://google.com";
+     //helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
     // hard coding for testing to avoid hitting aws again and again.
 //    String imageS3Url = "https://kinsta.com/wp-content/uploads/2017/04/change-wordpress-url-1.png";
 
@@ -124,16 +123,16 @@ public class PoroductService {
 
     Page<Product> products;
     if ((!(tagReferences.isPresent()) && !(locationReference.isPresent()))) {
-      products = productRepository.getAllByIsActiveOrderByPopularity(true, paginationConfig);
+      products = productRepository.getAllByIsActive(true, paginationConfig);
     } else if (!tagReferences.isPresent()) {
       products =
-          productRepository.getAllByLocationInOrderByPopularity(locations, paginationConfig);
+          productRepository.getAllByLocationIn(locations, paginationConfig);
     } else if (!locationReference.isPresent()) {
-      products = productRepository.getAllByTagsInOrderByPopularity(tags, paginationConfig);
+      products = productRepository.getAllByTags(tags, paginationConfig);
     } else { // both present
       // passing List<Tag> still saying expected arraylist and you are sending Tag
       products =
-          productRepository.getAllByTagsInAndLocationInOrderByPopularity(
+          productRepository.getAllByTagsInAndLocationIn(
               tags, locations, paginationConfig);
     }
 

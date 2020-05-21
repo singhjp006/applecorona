@@ -70,7 +70,8 @@ public class Product implements Serializable {
 
   Long accessCount = 0l;
 
-  Long curatorsPoint;
+
+  Long curatorsPoint=0l;
 
   double popularity;
 
