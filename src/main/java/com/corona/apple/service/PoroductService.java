@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.ParseException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import com.corona.apple.CommonUtils;
 import com.corona.apple.dao.model.Location;
@@ -17,6 +18,7 @@ import com.corona.apple.dto.PaginatedResponse;
 import com.corona.apple.dto.ProductResponse;
 import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
+import com.corona.apple.dto.request.TagRequest;
 import com.corona.apple.dto.request.UpdateProductRequest;
 import com.corona.apple.service.mapper.MapperHelper;
 import lombok.AccessLevel;
@@ -58,8 +60,8 @@ public class PoroductService {
     createProductRequest
         .getTags()
         .forEach(
-            tagName -> {
-              tags.add(tagService.createTag(tagName));
+            tag -> {
+              tags.add(tagService.createTag(tag));
             });
 
             String imageS3Url ="http://google.com";
@@ -72,29 +74,18 @@ public class PoroductService {
     return productService.createProduct(product);
   }
 
-  public Product updateProduct(UpdateProductRequest createProductRequest) {
+  public Product updateProduct(UpdateProductRequest updateProductRequest) {
 
-//    Location location = locationService.getOrCreateLocation(createProductRequest.getLocationName());
-//
-//    List<Tag> tags = new ArrayList<>();
-//    createProductRequest
-//            .getTags()
-//            .forEach(
-//                    tagName -> {
-//                      tags.add(tagService.createTag(tagName));
-//                    });
-//
-//    //        String imageS3Url =
-//    // helperClass.uploadFileToS3FromUrl(createProductRequest.getImageUrl());
-//    // hard coding for testing to avoid hitting aws again and again.
-//    String imageS3Url = "https://kinsta.com/wp-content/uploads/2017/04/change-wordpress-url-1.png";
-//
-//    Product product = MapperHelper.toProduct(createProductRequest, imageS3Url, tags, location);
-//
-//    product.setId();
-//
-//    return productRepository.save(product);
-    return null;
+    Optional<Product> product=productRepository.getById(updateProductRequest.getId());
+
+    if(!product.isPresent()){
+      throw new RuntimeException("No product exists with id: "+updateProductRequest.getId());
+    }
+
+      MapperHelper.toProduct(updateProductRequest,product.get());
+
+    productRepository.save(product.get());
+    return product.get();
   }
   // TODO sorting
   public PaginatedResponse<ProductResponse> getProducts(
@@ -294,7 +285,8 @@ public class PoroductService {
 
       if (currRow.getCell(2) != null && currRow.getCell(2).getStringCellValue() != null && !currRow.getCell(2).getStringCellValue().isEmpty()) {
         List<String> tags = parseCommaSeparatedTags(currRow.getCell(2).getStringCellValue());
-        createProductRequest.setTags(tags);
+        List<TagRequest> tagRequests=tags.stream().map(tagName->new TagRequest(tagName,true)).collect(Collectors.toList());
+        createProductRequest.setTags(tagRequests);
       } else {
         System.out.println("No tags for: " + currRow.getCell(2).getStringCellValue());
         continue;

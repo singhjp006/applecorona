@@ -25,6 +25,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -75,15 +76,14 @@ public class ProductController {
     return poroductService.createProduct(createProductRequest);
   }
 
-//  @ApiOperation(
-//          response = Location.class,
-//          value = "updateProduct",
-//          produces = MediaType.APPLICATION_JSON_VALUE)
-//  @PostMapping(path = "/products")
-//  public @ResponseBody Product updateProduct(@RequestBody UpdateProductRequest updateProductRequest)
-//          throws IOException {
-//    return poroductService.updateProduct(updateProductRequest);
-//  }
+  @ApiOperation(
+          response = Product.class,
+          value = "updateProduct",
+          produces = MediaType.APPLICATION_JSON_VALUE)
+  @PutMapping(path = "/products")
+  public @ResponseBody Product updateProduct(@RequestBody UpdateProductRequest updateProductRequest){
+    return poroductService.updateProduct(updateProductRequest);
+  }
 
 
   @ApiOperation(response = TagsResponse.class, value = "getTags")

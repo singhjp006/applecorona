@@ -3,6 +3,7 @@ package com.corona.apple.dao.model;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -41,5 +42,7 @@ public class Tag implements Serializable {
 
     double popularity;
 
+    @ColumnDefault("true")
+    boolean isCategory;
 
 }

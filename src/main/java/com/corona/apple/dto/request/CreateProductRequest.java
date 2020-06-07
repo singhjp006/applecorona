@@ -19,7 +19,7 @@ public class CreateProductRequest implements Serializable {
   String imageUrl;
   String locationName;
   String developedBy;
-  List<String> tags;
+  List<TagRequest> tags;
   Boolean isActive;
   URL androidAppUrl;
   URL iosAppUrl;

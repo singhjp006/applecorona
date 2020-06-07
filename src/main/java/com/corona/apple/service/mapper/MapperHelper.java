@@ -1,10 +1,16 @@
 package com.corona.apple.service.mapper;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 import com.corona.apple.Badges;
 import com.corona.apple.dao.model.Location;
@@ -18,6 +24,7 @@ import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.TagResponse;
 import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
+import com.corona.apple.dto.request.TagRequest;
 import com.corona.apple.dto.request.UpdateProductRequest;
 import org.springframework.data.domain.Page;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,6 +32,51 @@ import org.springframework.web.multipart.MultipartFile;
 public class MapperHelper {
 
   private MapperHelper() {}
+
+  public static void toProduct(UpdateProductRequest updateProductRequest, Product productEntity) {
+
+    productEntity.setUpdatedAt(new Date());
+    if (Objects.nonNull(updateProductRequest.getDevelopedBy())) {
+      productEntity.setDevelopedBy(updateProductRequest.getDevelopedBy());
+    }
+    if (Objects.nonNull(updateProductRequest.getImageS3Url())) {
+      productEntity.setImageUrl(updateProductRequest.getImageS3Url());
+    }
+    if (Objects.nonNull(updateProductRequest.getIsActive())) {
+      productEntity.setIsActive(updateProductRequest.getIsActive());
+    }
+    if (Objects.nonNull(updateProductRequest.getShortDescription())) {
+      productEntity.setShortDescription(updateProductRequest.getShortDescription().trim());
+    }
+    if (Objects.nonNull(updateProductRequest.getLongDescription())) {
+      productEntity.setLongDescription(updateProductRequest.getLongDescription().trim());
+    }
+    if (Objects.nonNull(updateProductRequest.getName())) {
+      productEntity.setName(updateProductRequest.getName().trim());
+    }
+    if (Objects.nonNull(updateProductRequest.getUrl())) {
+      productEntity.setUrl(updateProductRequest.getUrl().toString());
+    }
+    if (updateProductRequest.getVideoUrl() != null) {
+      productEntity.setVideoEmbedUrl(updateProductRequest.getVideoUrl().toString());
+    }
+    if (updateProductRequest.getAndroidAppUrl() != null) {
+      productEntity.setAndroidAppUrl(updateProductRequest.getAndroidAppUrl().toString());
+    }
+    if (updateProductRequest.getIosAppUrl() != null) {
+      productEntity.setIosAppUrl(updateProductRequest.getIosAppUrl().toString());
+    }
+
+    if (Objects.nonNull(updateProductRequest.getCuratorsPoint())) {
+      productEntity.setCuratorsPoint(updateProductRequest.getCuratorsPoint());
+    }
+
+    if (Objects.nonNull(updateProductRequest.getBadge())) {
+      List<String> badges = productEntity.getBadges();
+      badges.add(updateProductRequest.getBadge().name());
+      productEntity.setBadges(badges.stream().distinct().collect(Collectors.toList()));
+    }
+  }
 
   public static Product toProduct(
       CreateProductRequest createProductRequest,
@@ -52,14 +104,13 @@ public class MapperHelper {
       productEntity.setIosAppUrl(createProductRequest.getIosAppUrl().toString());
     }
 
+    productEntity.setUpdatedAt(new Date());
     productEntity.setLocation(location);
     productEntity.setCuratorsPoint(createProductRequest.getCuratorsPoint());
     productEntity.setBadges(Collections.singletonList(Badges.NEW.name()));
 
     return productEntity;
   }
-
-
 
   private static String getReferenceIdForProduct(String productName) {
 
@@ -73,12 +124,13 @@ public class MapperHelper {
     return builder.toString();
   }
 
-  public static Tag toTag(String name) {
+  public static Tag toTag(TagRequest tagRequest) {
     Tag tagEntity = new Tag();
     tagEntity.setCreatedAt(new Date());
     tagEntity.setIsActive(true);
-    tagEntity.setName(name.trim());
-    tagEntity.setReferenceId(getReferenceIdForTagOrLocation(name));
+    tagEntity.setName(tagRequest.getTagName().trim());
+    tagEntity.setCategory(tagRequest.isCategory());
+    tagEntity.setReferenceId(getReferenceIdForTagOrLocation(tagRequest.getTagName()));
     return tagEntity;
   }
 
@@ -208,17 +260,18 @@ public class MapperHelper {
     return convFile;
   }
 
-    public static byte[] convertFileToBytesArray(File file) throws IOException {
-      byte[] bytesArray = new byte[(int) file.length()];
+  public static byte[] convertFileToBytesArray(File file) throws IOException {
+    byte[] bytesArray = new byte[(int) file.length()];
 
-      FileInputStream fis = new FileInputStream(file);
-      fis.read(bytesArray); // read file into bytes[]
-      fis.close();
+    FileInputStream fis = new FileInputStream(file);
+    fis.read(bytesArray); // read file into bytes[]
+    fis.close();
 
-      return bytesArray;
-    }
+    return bytesArray;
+  }
 
-  public static void writeByteArrayToFile(byte[] bytesArray, String fileLocation, String fileName) throws IOException {
+  public static void writeByteArrayToFile(byte[] bytesArray, String fileLocation, String fileName)
+      throws IOException {
     OutputStream os = new FileOutputStream(fileLocation + fileName);
     os.write(bytesArray);
     os.close();
