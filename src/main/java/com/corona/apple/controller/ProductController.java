@@ -2,12 +2,17 @@ package com.corona.apple.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.corona.apple.dao.model.Location;
 import com.corona.apple.dao.model.Product;
+import com.corona.apple.dto.LocationsResponse;
 import com.corona.apple.dto.PaginatedResponse;
-import com.corona.apple.dto.*;
+import com.corona.apple.dto.ProductResponse;
+import com.corona.apple.dto.ProductsResponse;
+import com.corona.apple.dto.SingleProductResponse;
+import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.dto.request.UpdateProductRequest;
 import com.corona.apple.service.HelperClass;
@@ -15,7 +20,6 @@ import com.corona.apple.service.LocationService;
 import com.corona.apple.service.PoroductService;
 import com.corona.apple.service.TagService;
 import com.corona.apple.service.mapper.MapperHelper;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
@@ -27,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -44,11 +49,9 @@ public class ProductController {
 
   @Autowired PoroductService poroductService;
 
-  @Autowired
-  LocationService locationService;
+  @Autowired LocationService locationService;
 
-  @Autowired
-  TagService tagService;
+  @Autowired TagService tagService;
 
   @ApiIgnore
   @ApiOperation(response = String.class, value = "uploadFileToS3")
@@ -61,8 +64,11 @@ public class ProductController {
   @ApiIgnore
   @ApiOperation(response = String.class, value = "uploadFileToS3FromUrl")
   @PostMapping(path = "/uploadFileToS3FromUrl")
-  public @ResponseBody String uploadFileToS3FromUrl(@RequestParam String imageUrl)
-      throws IOException {
+  public @ResponseBody String uploadFileToS3FromUrl(
+      @RequestParam String imageUrl, @RequestHeader("auth") String auth) throws IOException {
+    if (Objects.isNull(auth) || !auth.equals("anuragjpaakash"))
+      throw new RuntimeException("Invalid request auth");
+
     return helperClass.uploadFileToS3FromUrl(imageUrl);
   }
 
@@ -71,20 +77,25 @@ public class ProductController {
       value = "createProduct",
       produces = MediaType.APPLICATION_JSON_VALUE)
   @PostMapping(path = "/products")
-  public @ResponseBody Product createProduct(@RequestBody CreateProductRequest createProductRequest)
+  public @ResponseBody Product createProduct(
+      @RequestBody CreateProductRequest createProductRequest, @RequestHeader("auth") String auth)
       throws IOException {
+    if (Objects.isNull(auth) || !auth.equals("anuragjpaakash"))
+      throw new RuntimeException("Invalid request auth");
     return poroductService.createProduct(createProductRequest);
   }
 
   @ApiOperation(
-          response = Product.class,
-          value = "updateProduct",
-          produces = MediaType.APPLICATION_JSON_VALUE)
+      response = Product.class,
+      value = "updateProduct",
+      produces = MediaType.APPLICATION_JSON_VALUE)
   @PutMapping(path = "/products")
-  public @ResponseBody Product updateProduct(@RequestBody UpdateProductRequest updateProductRequest){
+  public @ResponseBody Product updateProduct(
+      @RequestBody UpdateProductRequest updateProductRequest, @RequestHeader("auth") String auth) {
+    if (Objects.isNull(auth) || !auth.equals("anuragjpaakash"))
+      throw new RuntimeException("Invalid request auth");
     return poroductService.updateProduct(updateProductRequest);
   }
-
 
   @ApiOperation(response = TagsResponse.class, value = "getTags")
   @GetMapping(path = "/tags")
@@ -98,29 +109,34 @@ public class ProductController {
     return locationService.getLocations();
   }
 
-
   @ApiOperation(response = ProductsResponse.class, value = "getProducts")
   @GetMapping(path = "/products")
-  public @ResponseBody
-  PaginatedResponse<ProductResponse> getProducts(@RequestParam(required = false) Optional<List<String>> tagReferences, @RequestParam(required = false) Optional<String> locationReference, @RequestParam(defaultValue = "0") Long offset, @RequestParam(defaultValue = "30") Long limit) {
+  public @ResponseBody PaginatedResponse<ProductResponse> getProducts(
+      @RequestParam(required = false) Optional<List<String>> tagReferences,
+      @RequestParam(required = false) Optional<String> locationReference,
+      @RequestParam(defaultValue = "0") Long offset,
+      @RequestParam(defaultValue = "30") Long limit) {
     return poroductService.getProducts(tagReferences, locationReference, offset, limit);
   }
 
   @ApiOperation(response = SingleProductResponse.class, value = "getProduct")
   @GetMapping(path = "/products/{referenceId}")
-  public @ResponseBody SingleProductResponse getProduct(@PathVariable("referenceId") String referenceId, @RequestParam(defaultValue = "true") Boolean getSimilar) {
+  public @ResponseBody SingleProductResponse getProduct(
+      @PathVariable("referenceId") String referenceId,
+      @RequestParam(defaultValue = "true") Boolean getSimilar) {
     return poroductService.getProduct(referenceId, getSimilar);
   }
 
-//  @ApiOperation(
-//      response = Location.class,
-//      value = "getProduct",
-//      produces = MediaType.APPLICATION_JSON_VALUE)
-//  @PostMapping(path = "/products/{productId}")
-//  public @ResponseBody Product getProduct(@RequestBody CreateProductRequest createProductRequest)
-//      throws IOException {
-//    return poroductService.createProduct(createProductRequest);
-//  }
+  //  @ApiOperation(
+  //      response = Location.class,
+  //      value = "getProduct",
+  //      produces = MediaType.APPLICATION_JSON_VALUE)
+  //  @PostMapping(path = "/products/{productId}")
+  //  public @ResponseBody Product getProduct(@RequestBody CreateProductRequest
+  // createProductRequest)
+  //      throws IOException {
+  //    return poroductService.createProduct(createProductRequest);
+  //  }
 
   @ApiOperation(
       response = Location.class,
@@ -136,7 +152,11 @@ public class ProductController {
 
   @ApiOperation(response = Boolean.class, value = "Import Products")
   @PostMapping(path = "/products/import")
-  public @ResponseBody Boolean importProducts(@RequestParam("file") MultipartFile excelMultipartFile) throws IOException, InvalidFormatException {
+  public @ResponseBody Boolean importProducts(
+      @RequestParam("file") MultipartFile excelMultipartFile, @RequestHeader("auth") String auth)
+      throws IOException, InvalidFormatException {
+    if (Objects.isNull(auth) || !auth.equals("anuragjpaakash"))
+      throw new RuntimeException("Invalid request auth");
 
     return poroductService.importProducts(MapperHelper.convertMultipartToFile(excelMultipartFile));
   }
