@@ -219,7 +219,7 @@ public class PoroductService {
       throw new RuntimeException("Exception while recording impression");
     }
 
-    return product.get().getUrl()+"?ref=https://coronadaily.org/";
+    return product.get().getUrl()+"?ref=https://coronagears.co/";
   }
 
   private List<ProductResponse> getSimilarProducts(Product product, Long limit) {
