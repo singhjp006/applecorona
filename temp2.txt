@@ -1,0 +1,152 @@
+[INFO] Scanning for projects...
+[INFO] 
+[INFO] -------------------< com.apple.corona:apple-corona >--------------------
+[INFO] Building apple-corona 1.0-SNAPSHOT
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ apple-corona ---
+[INFO] com.apple.corona:apple-corona:jar:1.0-SNAPSHOT
+[INFO] +- io.projectreactor.netty:reactor-netty:jar:0.8.12.RELEASE:compile
+[INFO] |  +- io.netty:netty-codec-http:jar:4.1.39.Final:compile
+[INFO] |  |  +- io.netty:netty-common:jar:4.1.39.Final:compile
+[INFO] |  |  +- io.netty:netty-buffer:jar:4.1.39.Final:compile
+[INFO] |  |  +- io.netty:netty-transport:jar:4.1.39.Final:compile
+[INFO] |  |  |  \- io.netty:netty-resolver:jar:4.1.39.Final:compile
+[INFO] |  |  \- io.netty:netty-codec:jar:4.1.39.Final:compile
+[INFO] |  +- io.netty:netty-codec-http2:jar:4.1.39.Final:compile
+[INFO] |  +- io.netty:netty-handler:jar:4.1.39.Final:compile
+[INFO] |  +- io.netty:netty-handler-proxy:jar:4.1.39.Final:compile
+[INFO] |  |  \- io.netty:netty-codec-socks:jar:4.1.39.Final:compile
+[INFO] |  +- io.netty:netty-transport-native-epoll:jar:linux-x86_64:4.1.39.Final:compile
+[INFO] |  |  \- io.netty:netty-transport-native-unix-common:jar:4.1.39.Final:compile
+[INFO] |  \- io.projectreactor:reactor-core:jar:3.2.12.RELEASE:compile
+[INFO] |     \- org.reactivestreams:reactive-streams:jar:1.0.2:compile
+[INFO] +- org.springframework:spring-webflux:jar:5.1.9.RELEASE:compile
+[INFO] |  +- org.springframework:spring-beans:jar:5.1.9.RELEASE:compile
+[INFO] |  \- org.springframework:spring-web:jar:5.1.9.RELEASE:compile
+[INFO] +- io.micrometer:micrometer-core:jar:1.5.1:compile
+[INFO] |  +- org.hdrhistogram:HdrHistogram:jar:2.1.12:compile
+[INFO] |  \- org.latencyutils:LatencyUtils:jar:2.0.3:runtime
+[INFO] +- org.springframework.boot:spring-boot-actuator-autoconfigure:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-actuator:jar:2.1.3.RELEASE:compile
+[INFO] |  |  \- org.springframework.boot:spring-boot:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-autoconfigure:jar:2.1.3.RELEASE:compile
+[INFO] |  +- com.fasterxml.jackson.core:jackson-databind:jar:2.9.8:compile
+[INFO] |  |  +- com.fasterxml.jackson.core:jackson-annotations:jar:2.9.0:compile
+[INFO] |  |  \- com.fasterxml.jackson.core:jackson-core:jar:2.9.8:compile
+[INFO] |  +- org.springframework:spring-context:jar:5.1.5.RELEASE:compile
+[INFO] |  |  \- org.springframework:spring-expression:jar:5.1.5.RELEASE:compile
+[INFO] |  \- com.fasterxml.jackson.datatype:jackson-datatype-jsr310:jar:2.9.8:compile
+[INFO] +- io.micrometer:micrometer-registry-prometheus:jar:1.5.1:compile
+[INFO] |  \- io.prometheus:simpleclient_common:jar:0.8.1:compile
+[INFO] |     \- io.prometheus:simpleclient:jar:0.8.1:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-web:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- org.springframework.boot:spring-boot-starter-logging:jar:2.1.3.RELEASE:compile
+[INFO] |  |  |  +- ch.qos.logback:logback-classic:jar:1.2.3:compile
+[INFO] |  |  |  |  \- ch.qos.logback:logback-core:jar:1.2.3:compile
+[INFO] |  |  |  +- org.apache.logging.log4j:log4j-to-slf4j:jar:2.11.2:compile
+[INFO] |  |  |  |  \- org.apache.logging.log4j:log4j-api:jar:2.11.2:compile
+[INFO] |  |  |  \- org.slf4j:jul-to-slf4j:jar:1.7.25:compile
+[INFO] |  |  +- javax.annotation:javax.annotation-api:jar:1.3.2:compile
+[INFO] |  |  \- org.yaml:snakeyaml:jar:1.23:runtime
+[INFO] |  +- org.springframework.boot:spring-boot-starter-json:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- com.fasterxml.jackson.datatype:jackson-datatype-jdk8:jar:2.9.8:compile
+[INFO] |  |  \- com.fasterxml.jackson.module:jackson-module-parameter-names:jar:2.9.8:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-tomcat:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-core:jar:9.0.16:compile
+[INFO] |  |  +- org.apache.tomcat.embed:tomcat-embed-el:jar:9.0.16:compile
+[INFO] |  |  \- org.apache.tomcat.embed:tomcat-embed-websocket:jar:9.0.16:compile
+[INFO] |  +- org.hibernate.validator:hibernate-validator:jar:6.0.14.Final:compile
+[INFO] |  |  +- javax.validation:validation-api:jar:2.0.1.Final:compile
+[INFO] |  |  \- org.jboss.logging:jboss-logging:jar:3.3.2.Final:compile
+[INFO] |  \- org.springframework:spring-webmvc:jar:5.1.5.RELEASE:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-data-jpa:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-aop:jar:2.1.3.RELEASE:compile
+[INFO] |  |  \- org.aspectj:aspectjweaver:jar:1.9.2:compile
+[INFO] |  +- org.springframework.boot:spring-boot-starter-jdbc:jar:2.1.3.RELEASE:compile
+[INFO] |  |  +- com.zaxxer:HikariCP:jar:3.2.0:compile
+[INFO] |  |  \- org.springframework:spring-jdbc:jar:5.1.5.RELEASE:compile
+[INFO] |  +- javax.transaction:javax.transaction-api:jar:1.3:compile
+[INFO] |  +- javax.xml.bind:jaxb-api:jar:2.3.1:compile
+[INFO] |  |  \- javax.activation:javax.activation-api:jar:1.2.0:compile
+[INFO] |  +- org.hibernate:hibernate-core:jar:5.3.7.Final:compile
+[INFO] |  |  +- javax.persistence:javax.persistence-api:jar:2.2:compile
+[INFO] |  |  +- org.javassist:javassist:jar:3.23.1-GA:compile
+[INFO] |  |  +- net.bytebuddy:byte-buddy:jar:1.8.17:compile
+[INFO] |  |  +- antlr:antlr:jar:2.7.7:compile
+[INFO] |  |  +- org.jboss:jandex:jar:2.0.5.Final:compile
+[INFO] |  |  +- org.dom4j:dom4j:jar:2.1.1:compile
+[INFO] |  |  \- org.hibernate.common:hibernate-commons-annotations:jar:5.0.4.Final:compile
+[INFO] |  \- org.springframework:spring-aspects:jar:5.1.5.RELEASE:compile
+[INFO] +- javax.persistence:persistence-api:jar:1.0.2:compile
+[INFO] +- org.springframework.data:spring-data-jpa:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework.data:spring-data-commons:jar:2.1.3.RELEASE:compile
+[INFO] |  +- org.springframework:spring-orm:jar:5.1.3.RELEASE:compile
+[INFO] |  +- org.springframework:spring-aop:jar:5.1.3.RELEASE:compile
+[INFO] |  +- org.springframework:spring-tx:jar:5.1.3.RELEASE:compile
+[INFO] |  +- org.aspectj:aspectjrt:jar:1.9.1:compile
+[INFO] |  \- org.slf4j:slf4j-api:jar:1.7.25:compile
+[INFO] +- org.springframework:spring-core:jar:5.1.9.RELEASE:compile
+[INFO] |  \- org.springframework:spring-jcl:jar:5.1.9.RELEASE:compile
+[INFO] +- mysql:mysql-connector-java:jar:8.0.17:compile
+[INFO] |  \- com.google.protobuf:protobuf-java:jar:3.6.1:compile
+[INFO] +- org.projectlombok:lombok:jar:1.18.6:compile
+[INFO] +- org.springframework.boot:spring-boot-starter-test:jar:2.1.3.RELEASE:test
+[INFO] |  +- org.springframework.boot:spring-boot-test:jar:2.1.3.RELEASE:test
+[INFO] |  +- org.springframework.boot:spring-boot-test-autoconfigure:jar:2.1.3.RELEASE:test
+[INFO] |  +- com.jayway.jsonpath:json-path:jar:2.4.0:test
+[INFO] |  |  \- net.minidev:json-smart:jar:2.3:test
+[INFO] |  |     \- net.minidev:accessors-smart:jar:1.2:test
+[INFO] |  |        \- org.ow2.asm:asm:jar:5.0.4:test
+[INFO] |  +- junit:junit:jar:4.12:test
+[INFO] |  +- org.assertj:assertj-core:jar:3.11.1:test
+[INFO] |  +- org.mockito:mockito-core:jar:2.23.4:test
+[INFO] |  |  +- net.bytebuddy:byte-buddy-agent:jar:1.9.3:test
+[INFO] |  |  \- org.objenesis:objenesis:jar:2.6:test
+[INFO] |  +- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] |  +- org.hamcrest:hamcrest-library:jar:1.3:test
+[INFO] |  +- org.skyscreamer:jsonassert:jar:1.5.0:test
+[INFO] |  |  \- com.vaadin.external.google:android-json:jar:0.0.20131108.vaadin1:test
+[INFO] |  +- org.springframework:spring-test:jar:5.1.5.RELEASE:test
+[INFO] |  \- org.xmlunit:xmlunit-core:jar:2.6.2:test
+[INFO] +- io.springfox:springfox-swagger-ui:jar:2.9.2:compile
+[INFO] |  \- io.springfox:springfox-spring-web:jar:2.9.2:compile
+[INFO] +- io.springfox:springfox-swagger2:jar:2.9.2:compile
+[INFO] |  +- io.swagger:swagger-annotations:jar:1.5.20:compile
+[INFO] |  +- io.swagger:swagger-models:jar:1.5.20:compile
+[INFO] |  +- io.springfox:springfox-spi:jar:2.9.2:compile
+[INFO] |  |  \- io.springfox:springfox-core:jar:2.9.2:compile
+[INFO] |  +- io.springfox:springfox-schema:jar:2.9.2:compile
+[INFO] |  +- io.springfox:springfox-swagger-common:jar:2.9.2:compile
+[INFO] |  +- com.google.guava:guava:jar:20.0:compile
+[INFO] |  +- com.fasterxml:classmate:jar:1.4.0:compile
+[INFO] |  +- org.springframework.plugin:spring-plugin-core:jar:1.2.0.RELEASE:compile
+[INFO] |  +- org.springframework.plugin:spring-plugin-metadata:jar:1.2.0.RELEASE:compile
+[INFO] |  \- org.mapstruct:mapstruct:jar:1.2.0.Final:compile
+[INFO] +- org.apache.poi:poi:jar:4.1.2:compile
+[INFO] |  +- commons-codec:commons-codec:jar:1.13:compile
+[INFO] |  +- org.apache.commons:commons-collections4:jar:4.4:compile
+[INFO] |  +- org.apache.commons:commons-math3:jar:3.6.1:compile
+[INFO] |  \- com.zaxxer:SparseBitSet:jar:1.2:compile
+[INFO] +- org.apache.poi:poi-ooxml:jar:4.1.2:compile
+[INFO] |  +- org.apache.poi:poi-ooxml-schemas:jar:4.1.2:compile
+[INFO] |  |  \- org.apache.xmlbeans:xmlbeans:jar:3.1.0:compile
+[INFO] |  +- org.apache.commons:commons-compress:jar:1.19:compile
+[INFO] |  \- com.github.virtuald:curvesapi:jar:1.06:compile
+[INFO] \- com.amazonaws:aws-java-sdk-s3:jar:1.11.785:compile
+[INFO]    +- com.amazonaws:aws-java-sdk-kms:jar:1.11.785:compile
+[INFO]    +- com.amazonaws:aws-java-sdk-core:jar:1.11.785:compile
+[INFO]    |  +- commons-logging:commons-logging:jar:1.1.3:compile
+[INFO]    |  +- org.apache.httpcomponents:httpclient:jar:4.5.9:compile
+[INFO]    |  |  \- org.apache.httpcomponents:httpcore:jar:4.4.11:compile
+[INFO]    |  +- software.amazon.ion:ion-java:jar:1.0.2:compile
+[INFO]    |  +- com.fasterxml.jackson.dataformat:jackson-dataformat-cbor:jar:2.6.7:compile
+[INFO]    |  \- joda-time:joda-time:jar:2.8.1:compile
+[INFO]    \- com.amazonaws:jmespath-java:jar:1.11.785:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  1.919 s
+[INFO] Finished at: 2020-07-03T20:34:58+05:30
+[INFO] ------------------------------------------------------------------------

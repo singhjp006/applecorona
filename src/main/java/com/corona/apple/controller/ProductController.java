@@ -15,6 +15,8 @@ import com.corona.apple.dto.SingleProductResponse;
 import com.corona.apple.dto.TagsResponse;
 import com.corona.apple.dto.request.CreateProductRequest;
 import com.corona.apple.dto.request.UpdateProductRequest;
+import com.corona.apple.webclient.ClientTest;
+import com.corona.apple.webclient.ClientTestCustom;
 import com.corona.apple.service.HelperClass;
 import com.corona.apple.service.LocationService;
 import com.corona.apple.service.PoroductService;
@@ -53,6 +55,16 @@ public class ProductController {
 
   @Autowired TagService tagService;
 
+  @Autowired ClientTest clientTest;
+
+
+
+  @Autowired
+  ClientTestCustom clientTestCustom;
+
+
+
+
   @ApiIgnore
   @ApiOperation(response = String.class, value = "uploadFileToS3")
   @PostMapping(path = "uploadFile")
@@ -60,6 +72,7 @@ public class ProductController {
       throws IOException {
     return helperClass.uploadFileToS3(productImage);
   }
+
 
   @ApiIgnore
   @ApiOperation(response = String.class, value = "uploadFileToS3FromUrl")
